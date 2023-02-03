@@ -1,20 +1,21 @@
-package com.paymybuddy.transactionapp.model;
+package com.paymybuddy.transactionapp.entity;
 
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-@Entity
 @NoArgsConstructor
+@Entity
+@Table
 public class Balance implements Serializable {
 
     @Id
@@ -23,15 +24,15 @@ public class Balance implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
-    private Long credit = 0L;
-    private Long debt = 0L ;
+    private UserAccount user;
 
+    private BigDecimal userBalance;
+
+    private BigDecimal credit;
+
+    private BigDecimal debit;
     @OneToMany
     private List<Transaction> history;
 
 
-    public Long getSum(){
-        return credit - debt;
-    }
 }
