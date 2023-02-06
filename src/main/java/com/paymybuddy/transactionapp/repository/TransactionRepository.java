@@ -13,20 +13,20 @@ import java.util.UUID;
 
 @Repository
 @ComponentScan
-public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
     //create, update
     Transaction save(Transaction transaction);
 
     //read
-    Optional<Transaction>  findById(UUID transactionId);
-    List<Transaction> findByCreditor(UUID userAccountId);
-    List<Transaction> findByDebtor(UUID userAccountId);
+    Optional<Transaction>  findById(Long transactionId);
+    List<Transaction> findByCreditor(Long userAccountId);
+    List<Transaction> findByDebtor(Long userAccountId);
 
     List<Transaction> findAll();
 
     //delete
-    void deleteById(UUID transactionId);
+    void deleteById(Long transactionId);
 
 
     TransactionDto save(TransactionDto transaction);

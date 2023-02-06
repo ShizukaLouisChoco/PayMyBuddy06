@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface BalanceRepository extends JpaRepository<Balance, UUID> {
+public interface BalanceRepository extends JpaRepository<Balance, Long> {
 
    //create, update
     Balance save(Balance balance);
