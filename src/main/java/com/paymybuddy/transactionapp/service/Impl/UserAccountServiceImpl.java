@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
@@ -40,7 +39,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     //update
     @Override
     public UserAccount addConnection(String connectionEmail,UserAccount userAccount){
-        Optional<UserAccount> optionalConnection = userAccountRepository.findOneByEmail(connectionEmail);
+        Optional<UserAccount> optionalConnection = userAccountRepository.findByEmail(connectionEmail);
         UserAccount connection = optionalConnection.get();
         userAccount.addConnections(connection);
         return userAccountRepository.save(userAccount);
@@ -49,7 +48,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     //read
     @Override
     public UserAccountDto findByEmail(String email) {
-        userAccountRepository.findOneByEmail(email).orElseThrow(() -> new UserAccountNotFoundException("User not found with email = " + email));
+        userAccountRepository.findByEmail(email).orElseThrow(() -> new UserAccountNotFoundException("User not found with email = " + email));
         return new UserAccountDto();
     }
 

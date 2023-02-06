@@ -10,7 +10,7 @@ public interface TransactionService {
 
     TransactionDto createTransaction(TransactionDto transaction);
 
-    List<Transaction> findByCreditor(UUID id);
-    List<Transaction> findByDebtor(UUID id);
+    List<Transaction> findByCreditor(Long id);
+    List<Transaction> findByDebtor(Long id);
 
 }

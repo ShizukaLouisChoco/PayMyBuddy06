@@ -41,21 +41,16 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> findByCreditor(UUID id) {
+    public List<Transaction> findByCreditor(Long id) {
         return transactionRepository.findByCreditor(id);
     }
 
     @Override
-    public List<Transaction> findByDebtor(UUID id) {
+    public List<Transaction> findByDebtor(Long id) {
         return transactionRepository.findByDebtor(id);
     }
 
-    /**
-     * get person infos with adult and child number by fire station number
-     * url : http://localhost:8080/firestation?stationNumber={fireStationNumber}
-     * @param fireStationNumber to search
-     * @return PersonInfosWithAdultsAndChildrenNumberDTO
-     */
+
 
     /*public BigDecimal calculateTotalCredit(UUID userAccountId){
         List<Transaction> creditHistory = transactionRepository.findByCreditor(userAccountId);
