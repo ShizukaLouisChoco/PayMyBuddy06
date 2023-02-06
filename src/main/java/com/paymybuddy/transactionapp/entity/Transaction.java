@@ -17,14 +17,16 @@ import java.util.UUID;
 public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private UUID id;
+    private Long id;
 
     @ManyToOne
     @PrimaryKeyJoinColumn
+    @JoinColumn(nullable = false)
     private UserAccount creditor;
 
     @ManyToOne
     @PrimaryKeyJoinColumn
+    @JoinColumn(nullable = false)
     private UserAccount debtor;
 
     @Column(nullable = false)

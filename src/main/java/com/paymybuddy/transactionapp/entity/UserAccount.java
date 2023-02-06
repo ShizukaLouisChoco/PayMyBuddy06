@@ -1,12 +1,17 @@
 package com.paymybuddy.transactionapp.entity;
 
+import com.fasterxml.jackson.databind.deser.Deserializers;
+import com.paymybuddy.transactionapp.security.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,12 +20,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
-public class UserAccount implements Serializable {
-
+@Table(name = "user_account")
+public class UserAccount implements Serializable,UserDetails {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private UUID id;
+    private Long id;
 
     @Column(nullable = false, unique=true)
     private String email;
@@ -48,4 +52,32 @@ public class UserAccount implements Serializable {
         connections.add(userAccount);
         userAccount.connections.add(this);
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new Role("ROLE_USER"));
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
 }

@@ -20,11 +20,12 @@ public class Balance implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private UUID id;
+    private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserAccount user;
+
 
     private BigDecimal userBalance;
 
