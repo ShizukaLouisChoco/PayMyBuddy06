@@ -1,0 +1,24 @@
+[{
+  "id": "100",
+  "creditor": "001",
+  "debtor": "002",
+  "amount": 50.0,
+  "description": "Transaction 1",
+  "fee": 2.5
+},
+{
+  "id": "200",
+  "creditor":"001",
+  "debtor": "002",
+   "amount": 50.0,
+  "description": "Transaction 1",
+  "fee": 2.5
+},{
+  "id": "200",
+  "creditor": "001",
+  "debtor": "003",
+  "amount": 50.0,
+  "description": "Transaction 2",
+  "fee": 2.5
+}
+]
