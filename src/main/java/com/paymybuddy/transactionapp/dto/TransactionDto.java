@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+/**
+ * DTO to create transaction
+ * url : "/transaction"
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

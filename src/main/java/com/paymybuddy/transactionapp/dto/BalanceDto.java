@@ -16,8 +16,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BalanceDto {
 
-    private UUID id;
-
     private UserAccount user;
 
     private BigDecimal credit;
@@ -26,7 +24,6 @@ public class BalanceDto {
     private List<Transaction> history;
 
     public BalanceDto(Balance balance){
-     this.id = balance.getId();
      this.user = balance.getUser();
      this.credit = balance.getCredit();
      this.debit = balance.getDebit();
