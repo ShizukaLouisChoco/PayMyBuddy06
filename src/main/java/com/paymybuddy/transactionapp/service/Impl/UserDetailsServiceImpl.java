@@ -1,27 +1,33 @@
 package com.paymybuddy.transactionapp.service.Impl;
 
+import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.exception.UserAccountNotFoundException;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
 import com.paymybuddy.transactionapp.service.UserDetailService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-@Service
-public class UserDetailServiceImpl implements UserDetailService {
+import java.util.Optional;
 
-    @Autowired
+@Service
+public class UserDetailsServiceImpl implements UserDetailService {
+
     private UserAccountRepository userAccountRepository;
 
+    public UserDetailsServiceImpl(UserAccountRepository userAccountRepository) {
+        this.userAccountRepository = userAccountRepository;
+    }
+
     @Override
-    public UserDetails loadUserByUsername(String userEmail) throws UserAccountNotFoundException {
-        return userAccountRepository.findOneByEmail(userEmail)
+    public UserDetails loadUserByUsername(String email) throws UserAccountNotFoundException {
+
+        return userAccountRepository.findByEmail(email)
                 .map(user -> new User(
                         user.getEmail(),
                         user.getPassword(),
-                        null
+                        AuthorityUtils.createAuthorityList("USER")
                 ))
-                .orElseThrow(UserAccountNotFoundException::new);
-    }
+                .orElseThrow(UserAccountNotFoundException::new);}
 }
