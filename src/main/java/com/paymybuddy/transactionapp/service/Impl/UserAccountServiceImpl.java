@@ -1,8 +1,8 @@
 package com.paymybuddy.transactionapp.service.Impl;
 
-import com.paymybuddy.transactionapp.dto.CreateUserDto;
-import com.paymybuddy.transactionapp.dto.UserAccountDto;
-import com.paymybuddy.transactionapp.entity.Balance;
+import com.paymybuddy.transactionapp.dto.RegisterDto;
+import com.paymybuddy.transactionapp.exception.EmailAlradyExistException;
+import com.paymybuddy.transactionapp.exception.FriendAlreadyExistException;
 import com.paymybuddy.transactionapp.exception.UserAccountNotFoundException;
 import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
@@ -52,25 +52,24 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 
     @Override
-    public UserAccount addConnection(String connectionEmail,UserAccount userAccount){
-        Optional<UserAccount> optionalConnection = userAccountRepository.findByEmail(connectionEmail);
-        UserAccount connection = optionalConnection.get();
-        userAccount.addConnections(connection);
-        return userAccountRepository.save(userAccount);
+    public UserAccount addFriend(String friendEmail) throws FriendAlreadyExistException {
+        UserAccount friend =  getUser(friendEmail);
+
+        UserAccount connectedUser = getConnectedUser();
+        //verify if the friend is already in the friend's list of connectedUser
+        if(connectedUser.friendExists(friend.getId())) {
+            throw new FriendAlreadyExistException("Friend exists on list");
+        }
+        //if he/she is not in the list, add in the list
+        connectedUser.getConnections().add(friend);
+        return userAccountRepository.save(connectedUser);
     }
 
-    //read
+
     @Override
-    public UserAccountDto findByEmail(String email) {
-        userAccountRepository.findByEmail(email).orElseThrow(() -> new UserAccountNotFoundException("User not found with email = " + email));
-        return new UserAccountDto();
-    }
-
-
-    //delete
-    @Override
-    public void deleteUserAccount(UserAccount userAccount) {
-
+    public UserAccount getUser(String email){
+        return userAccountRepository.findByEmail(email)
+                .orElseThrow(() -> new UserAccountNotFoundException("User not found with email = " + email));
     }
 
 
@@ -90,4 +89,12 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     }
 
+    public UserAccount getConnectedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && authentication.getName() != null){
+            return getUser(authentication.getName());
+        }
+
+        throw new AuthenticationCredentialsNotFoundException("User not connected");
+    }
 }

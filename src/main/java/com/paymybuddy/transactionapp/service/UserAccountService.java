@@ -1,25 +1,21 @@
 package com.paymybuddy.transactionapp.service;
 
-import com.paymybuddy.transactionapp.dto.CreateUserDto;
-import com.paymybuddy.transactionapp.dto.UserAccountDto;
+import com.paymybuddy.transactionapp.dto.RegisterDto;
 import com.paymybuddy.transactionapp.entity.UserAccount;
+import com.paymybuddy.transactionapp.exception.EmailAlradyExistException;
+import com.paymybuddy.transactionapp.exception.FriendAlreadyExistException;
 
 import java.math.BigDecimal;
 
 public interface UserAccountService {
 
-    //create
-    CreateUserDto createUser(UserAccount user);
+    UserAccount createUser(RegisterDto user) throws EmailAlradyExistException;
 
-    //update
-    UserAccount addConnection(String connectionEmail, UserAccount userAccount);
+    UserAccount addFriend(String friendEmail) throws FriendAlreadyExistException;
 
-    //read
-    UserAccountDto findByEmail(String email);
+    UserAccount getUser(String email);
 
-    //delete
-    void deleteUserAccount(UserAccount userAccount);
-    void deleteConnection(String connectionEmail);
+    UserAccount getConnectedUser();
 
     //function
     void debitBalance(BigDecimal amount);

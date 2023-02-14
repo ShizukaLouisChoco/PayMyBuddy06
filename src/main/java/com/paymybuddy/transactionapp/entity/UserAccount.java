@@ -1,25 +1,23 @@
 package com.paymybuddy.transactionapp.entity;
 
-import com.fasterxml.jackson.databind.deser.Deserializers;
-import com.paymybuddy.transactionapp.security.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Validated
 @Entity
 @Table(name = "user_account")
 public class UserAccount implements Serializable {
@@ -27,14 +25,19 @@ public class UserAccount implements Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Email address is required")
     @Column(nullable = false, unique=true)
+    @Size(min = 5, max = 30)
     private String email;
 
+    @NotBlank(message = "username is required")
     @Column(nullable = false)
     private String username;
 
 
     @Column(nullable = false)
+    @NotBlank(message = "password is required")
+    @Size(min = 5)
     private String password;
 
     private BigDecimal balance = BigDecimal.ZERO;
@@ -42,42 +45,17 @@ public class UserAccount implements Serializable {
     @OneToMany
     private List<UserAccount> connections = new ArrayList<>();
 
-    public UserAccount update(UserAccount user){
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-        return user;
+
+    public boolean friendExists(Long id){
+        return connections.stream().anyMatch(f -> f.id.equals(id));
     }
 
-    public void addConnections(UserAccount userAccount){
-        connections.add(userAccount);
-        userAccount.connections.add(this);
+
+    public void debitAmount(BigDecimal amount) {
+        balance.subtract(amount);
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new Role("ROLE_USER"));
-        return authorities;
+    public void creditAmount(BigDecimal amount) {
+        balance.add(amount);
     }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
-
 }
