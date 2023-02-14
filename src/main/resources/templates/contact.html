@@ -1,24 +1,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Contact</title>
     <link href="../static/css/paymybuddy.css" th:href="@{/css/paymybuddy.css}" rel="stylesheet"/>
-    <link href="../static/css/home.css" th:href="@{/css/home.css}" rel="stylesheet"/>
+    <link href="../static/css/contact.css" th:href="@{/css/contact.css}" rel="stylesheet"/>
     <!--Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
 </head>
-
 <body>
 <!--header-->
-<div id="main_wrapper" th:with="page='Home'">
+<div id="main_wrapper" th:with="page='Contact'">
     <header th:replace="~{header::header(${page})}"></header>
     <div th:replace="~{header::subheader(${page})}"></div>
-<!--contents-->
-<h2>Welcome to the Home Page!</h2>
-<p th:if="${loggedIn}">You are logged in as <span th:text="${username}"></span>.</p>
-<a th:href="@{/transaction}">View Transactions</a>
 </div>
-</body>
-</html>
+<!--contents-->
+

@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in</title>
+    <link href="../static/css/paymybuddy.css" th:href="@{/css/paymybuddy.css}" rel="stylesheet"/>
+    <link href="../static/css/register.css" th:href="@{/css/register.css}" rel="stylesheet"/>
+    <!--Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
+</head>
+<body>
+<!--header-->
+<div id="main_wrapper" th:with="page='Sign in'">
+    <header th:replace="~{header::header(${page})}"></header>
+    <div th:replace="~{header::subheader(${page})}"></div>
+</div>
+<!--contents-->
+<section>
+    <div id="signIn">
+
+        <h1 id="bigLogo">Pay My Buddy</h1>
+
+        <form action="/binding/input/text" method="post" th:action="@{/signin}" th:object="${userAccount}">
+            <p th:if="${#fields.hasErrors('username')}" th:errorclass="error" th:errors="*{username}" th:text="${e.message}" style="color: red;"></p>
+            <label> username </label>
+            <input type="text" th:field="*{username}"><br>
+            <p th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}" th:text="${e.message}" style="color: red;"></p>
+            <label> email </label>
+            <input type="email" th:field="*{email}"><br>
+            <p th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}" th:text="${e.message}" style="color: red;"></p>
+            <label> password </label>
+            <input type="password" th:field="*{password}"><br>
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</section>
+
+<html>
+<body>
+<h1 th:text="#{label.form.title}">form</h1>
+<form action="/" th:object="${createUserDto}" method="POST" enctype="utf8">
+    <div>
+        <label th:text="#{label.user.firstName}">first</label>
+        <input th:field="*{firstName}"/>
+        <p th:each="error: ${#fields.errors('firstName')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="#{label.user.lastName}">last</label>
+        <input th:field="*{lastName}"/>
+        <p th:each="error : ${#fields.errors('lastName')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="#{label.user.email}">email</label>
+        <input type="email" th:field="*{email}"/>
+        <p th:each="error : ${#fields.errors('email')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="#{label.user.password}">password</label>
+        <input type="password" th:field="*{password}"/>
+        <p th:each="error : ${#fields.errors('password')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="#{label.user.confirmPass}">confirm</label>
+        <input type="password" th:field="*{matchingPassword}"/>
+    </div>
+    <button type="submit" th:text="#{label.form.submit}">submit</button>
+</form>
+
+<a th:href="@{/login.html}" th:text="#{label.form.loginLink}">login</a>
+</body>
+</html>
+</html>

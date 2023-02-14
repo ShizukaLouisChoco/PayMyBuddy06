@@ -1,0 +1,12 @@
+*{
+    font-family: 'Inter', sans-serif;
+    margin: 0 1px;
+    padding: 0;
+}
+.contents{
+    min-width: 700px;
+    margin: 0 20%;
+}
+.alert{
+    color:red;
+}

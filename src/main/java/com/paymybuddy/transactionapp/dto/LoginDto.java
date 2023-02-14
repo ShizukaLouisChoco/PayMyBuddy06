@@ -5,26 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 /**
- * DTO to create user account
- * url : "/signup"
+ * DTO to login
+ * url : "/login"
  */
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserDto implements Serializable {
+@AllArgsConstructor
+public class LoginDto {
 
     private String email;
     private String password;
-    private String username;
 
 
-    public CreateUserDto(UserAccount userAccount){
-        this.username = userAccount.getUsername();
+    public LoginDto(UserAccount userAccount){
         this.email = userAccount.getEmail();
         this.password = userAccount.getPassword();
     }
-
 }

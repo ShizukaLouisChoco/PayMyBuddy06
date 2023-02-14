@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Transfer</title>
+    <link href="../static/css/paymybuddy.css" th:href="@{/css/paymybuddy.css}" rel="stylesheet"/>
+    <link href="../static/css/transfer.css" th:href="@{/css/transfer.css}" rel="stylesheet"/>
+    <!--Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
+</head>
+<body>
+<!--header-->
+<div id="main_wrapper" th:with="page='Transfer'">
+    <header th:replace="~{header::header(${page})}"></header>
+    <div th:replace="~{header::subheader(${page})}"></div>
+<!--contents-->
+        <div class="contents">
+    <section>
+            <div class="upperSendMoney">
+                <h2 style="display:inline-block;">Send Money</h2>
+                <a th:href="@{/connection}">
+                    <button type="button" class="btn btn--bleu">Add Connection</button>
+                </a>
+            </div>
+            <div class="sendMoney">
+                <form method="POST" th:action="@{/addtransaction}" th:object="${transactionDTO}">
+                    <!--transactionDTO needs creditor, amount and description-->
+                    <div class="paramerror" th:if="${param.errorMessage}" th:text="${param.errorMessage}"></div>
+                   <!--Select A connection-->
+                    <div class="left selectAConnection">
+                        <input type="hidden" th:field="*{connections}">
+                        <select th:field="*{connection.username}" required>
+                            <option th:if="${connections.isEmpty}" value="">No connection added</option>
+                            <option th:unless="${connections.isEmpty}" value="">Select A Connection</option>
+                            <option  th:each="connection : ${connections}" th:value="${username}" th:text="${username}" id="userName"></option>
+                        </select>
+                    </div>
+                    <!--description to add-->
+                    <!--amount-->
+                    <div class="center euro">
+                        <input th:unless="${connections.isEmpty}" type="number" min="2.00" step="0.01" th:field="*{amount}" th:data-max="${maxAmount}" placeholder="0€ ">
+                    </div>
+                    <div class="right pay">
+                        <input type="submit" th:unless="${connections.isEmpty}" class="btn btn--green" th:value="Pay">
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section>
+            <div class="sectionTitle">My Transactions</div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Connections</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${transactions.isEmpty()}">
+                    <td colspan="3">No transaction</td>
+                </tr>
+                <tr th:each="transaction, iterstat : ${transactions}" th:class="${iterstat.odd}?'odd'" th:classappend="!${transaction.isDebtor}?'colorred'" >
+                    <td th:text="${transaction.getcreditor().getUsername()}!=null?${transaction.getCreditor()}:'unsubscribed'"></td>
+                    <td th:text="${transaction.description}"></td>
+                    <td th:text="${transaction.amount}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <!--pagenation-->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item" th:if="${selectedPage > 1}">
+                        <a class="page-link" th:href="@{/transfers(page=${selectedPage - 1})}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:each="pageNumber : ${pageNumbers}" th:class="${pageNumber == selectedPage} ? 'active'">
+                        <a class="page-link" th:href="@{/transfers(page=${pageNumber})}">${pageNumber}</a>
+                    </li>
+                    <li class="page-item" th:if="${selectedPage < totalPages}">
+                        <a class="page-link" th:href="@{/transfers(page=${selectedPage + 1})}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <a th:href="@{/index}">Back to Index</a>
+</section>
+</div>
+</body>
+</html>

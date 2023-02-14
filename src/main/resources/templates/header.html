@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="../static/css/paymybuddy.css" th:href="@{/css/paymybuddy.css}" rel="stylesheet"/>
+    <link href="../static/css/header.css" th:href="@{/css/header.css}" rel="stylesheet"/>
+</head>
+<body>
+<header th:fragment="header(page)">
+    <div class="Logo">Pay My Buddy</div>
+    <nav>
+        <ul>
+            <li><a th:class="${#strings.equals(page, 'home')}?'athis'" href="/user/home" th:href="@{/user/home}">Home</a></li>
+            <li><a th:class="${#strings.equals(page, 'transfer')}?'athis'" href="/user/transfer" th:href="@{/user/transfer}">Transfer</a></li>
+            <li><a th:class="${#strings.equals(page, 'profile')}?'athis'" href="/user/profile" th:href="@{/user/profile}">Profile</a></li>
+            <li><a th:class="${#strings.equals(page, 'contact')}?'athis'" href="/user/contact" th:href="@{/user/contact}">Contact</a></li>
+            <li><a th:class="${#strings.equals(page, 'logOff')}?'athis'" href="/user/logoff" th:href="@{/user/logoff}">Log off</a></li>
+        </ul>
+    </nav>
+</header>
+<div th:fragment="subheader(page)">
+    <a class="athis" href="/user/home" th:href="@{/user/home}">Home</a> / <span class="color" th:text="${page}"></span>
+</div>
+</body>
+</html>

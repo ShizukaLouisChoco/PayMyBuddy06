@@ -1,19 +1,39 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-<head>
-    <title>Spring Security Example </title>
+<html xmlns="" xmlns:th="http://www.thymeleaf.org"><head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="../static/css/paymybuddy.css" th:href="@{/css/paymybuddy.css}" rel="stylesheet"/>
+    <link href="../static/css/login.css" th:href="@{/css/login.css}" rel="stylesheet"/>
 </head>
 <body>
-<div th:if="${param.error}">
+<!--contents-->
+<section>
+<div id="main-container">
+<div id="login-container">
+<div id="bigLogo">Pay My Buddy</div>
+<div th:if="${param.error}" class="alert alert-danger">
     Invalid username and password.
 </div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
 <form th:action="@{/login}" method="post">
-    <div><label> User Email : <input type="text" name="email"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
+    <div class="inputBox">
+        <label for="email"><img src="../static/img/email.png" th:src="@{/img/email.png}"></label>
+        <input type="text" id="email" placeholder="Email" name="email"/>
+    </div>
+    <div class="inputBox">
+        <label for="password"><img src="../static/img/password.png" th:src="@{/img/password.png}"></label>
+        <input type="password" id="password" placeholder="Password" name="password"/>
+    </div>
+    <div class="rememberMe">
+        <label for="rememberMe"></label>
+    <input type="checkbox" name="rememberMe" value="rememberMe"id="rememberMe"> Remember me
+    </div>
+    <div class="button-container">
+        <input class="button" type="submit" value="login">
+    </div>
 </form>
+    <a href="/register">You don't have an account? Sign in here !</a>
+</div>
+</div>
+</section>
 </body>
 </html>
