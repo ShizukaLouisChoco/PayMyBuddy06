@@ -8,13 +8,14 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailService {
 
-    private UserAccountRepository userAccountRepository;
+    private final UserAccountRepository userAccountRepository;
 
     public UserDetailsServiceImpl(UserAccountRepository userAccountRepository) {
         this.userAccountRepository = userAccountRepository;
