@@ -22,4 +22,8 @@ public class TransactionDto {
 
     private String description;
 
+    public BigDecimal getAmountForDebtor(){
+        BigDecimal fee = BigDecimal.valueOf(0.05);
+        return amount.subtract(amount.multiply(fee));
+    }
 }
