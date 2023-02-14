@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class TransactionDto {
 
-    private UserAccount creditor;
+    private Long creditorId;
 
     private BigDecimal amount;
 

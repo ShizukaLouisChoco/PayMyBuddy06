@@ -3,7 +3,6 @@ package com.paymybuddy.transactionapp.service;
 import com.paymybuddy.transactionapp.dto.TransactionDto;
 import com.paymybuddy.transactionapp.entity.Transaction;
 import com.paymybuddy.transactionapp.entity.UserAccount;
-import com.paymybuddy.transactionapp.repository.BalanceRepository;
 import com.paymybuddy.transactionapp.repository.TransactionRepository;
 import com.paymybuddy.transactionapp.service.Impl.TransactionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -25,10 +23,6 @@ public class TransactionServiceTest {
 
     @Mock
     private TransactionRepository transactionRepository;
-
-    @Mock
-    private BalanceRepository balanceRepository;
-
     private TransactionService transactionService;
 
     @BeforeEach
@@ -60,6 +54,7 @@ public class TransactionServiceTest {
         // WHEN
         when(transactionRepository.findByCreditor(creditorAccount.getId())).thenReturn(expectedResult);
         var result = transactionService.findByCreditor(creditorAccount.getId());
+
         // THEN
         verify(transactionRepository,times(1)).findByCreditor(creditorAccount.getId());
         assertThat(result).isEqualTo(expectedResult);

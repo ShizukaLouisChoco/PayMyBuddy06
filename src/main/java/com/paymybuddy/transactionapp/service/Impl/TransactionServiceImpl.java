@@ -15,12 +15,12 @@ import java.util.UUID;
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-    private final static Logger logger = LogManager.getLogger("TransactionServiceImpl");
-
+    private final UserAccountService userAccountService;
+    private final UserAccountRepository userAccountRepository;
     private final TransactionRepository transactionRepository;
 
     @Autowired
-    public TransactionServiceImpl(TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, UserAccountService userAccountService, UserAccountRepository userAccountRepository) {
         this.transactionRepository = transactionRepository;
     }
 

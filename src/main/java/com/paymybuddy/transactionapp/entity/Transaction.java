@@ -32,7 +32,6 @@ public class Transaction implements Serializable {
     @Column(nullable = false)
     private BigDecimal amount;
 
-
     @Column(nullable = false)
     private String description;
 
