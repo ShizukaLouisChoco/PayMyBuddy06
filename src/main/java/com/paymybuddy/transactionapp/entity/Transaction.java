@@ -13,10 +13,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name="transaction")
 public class Transaction implements Serializable {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "transaction_id")
     private Long id;
 
     @ManyToOne
@@ -36,11 +37,5 @@ public class Transaction implements Serializable {
     private String description;
 
     @Column(nullable = false)
-    private BigDecimal fee;
-
-    public BigDecimal getAmountForDebtor(){
-        fee = BigDecimal.valueOf(0.05);
-        return amount.subtract(amount.multiply(fee));
-    }
-
+    private BigDecimal debitAmount;
 }
