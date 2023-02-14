@@ -9,17 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface UserAccountRepository extends JpaRepository<UserAccount, Long> {
-
-    //create, update
-    UserAccount save(UserAccount userAccount);
-
     //read
     Optional<UserAccount> findByEmail(String userEmail);
-
-    //delete
-    void deleteById(Long userAccountId);
-
-
-
-
 }

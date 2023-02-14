@@ -5,38 +5,52 @@ import com.paymybuddy.transactionapp.dto.UserAccountDto;
 import com.paymybuddy.transactionapp.entity.Balance;
 import com.paymybuddy.transactionapp.exception.UserAccountNotFoundException;
 import com.paymybuddy.transactionapp.entity.UserAccount;
-import com.paymybuddy.transactionapp.repository.BalanceRepository;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
 import com.paymybuddy.transactionapp.service.UserAccountService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private final static Logger logger = LogManager.getLogger("UserAccountServiceImpl");
-
     private final UserAccountRepository userAccountRepository;
-    private final BalanceRepository balanceRepository;
 
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository, BalanceRepository balanceRepository) {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public UserAccountServiceImpl(UserAccountRepository userAccountRepository) {
         this.userAccountRepository = userAccountRepository;
-        this.balanceRepository = balanceRepository;
     }
 
 
-    //create
     @Override
-    public CreateUserDto createUser(UserAccount user){
-        userAccountRepository.save(user);
-        return new CreateUserDto(user);
-    };
+    public UserAccount createUser(RegisterDto user) throws EmailAlradyExistException{
+        //verification if the email is already used
+        Optional<UserAccount> userExists = userAccountRepository.findByEmail(user.getEmail());
 
-    //update
+        if(userExists.isPresent()){
+            throw new EmailAlradyExistException("Email exists");
+        }
+        //if it's not used, save in database with encoded password
+        UserAccount newUser = new UserAccount();
+        newUser.setUsername(user.getUsername());
+        newUser.setEmail(user.getEmail());
+        newUser.setPassword( passwordEncoder.encode(user.getPassword()));
+
+        return userAccountRepository.save(newUser);
+    }
+
+
     @Override
     public UserAccount addConnection(String connectionEmail,UserAccount userAccount){
         Optional<UserAccount> optionalConnection = userAccountRepository.findByEmail(connectionEmail);
@@ -59,30 +73,21 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     }
 
-    @Override
-    public void deleteConnection(String connectionEmail) {
-
-    }
 
     //function
     @Override
-    public void debitBalanceAmountToBank(BigDecimal amount, UserAccount userAccount) {
-        Balance userBalance = userAccount.getBalance();
-        BigDecimal actualBalance =userBalance.getUserBalance();
-        actualBalance.subtract(amount);
-        userBalance.setUserBalance(actualBalance);
-        balanceRepository.save(userBalance);
+    public void debitBalance(BigDecimal amount) {
+        UserAccount connectedUser = getConnectedUser();
+        connectedUser.debitAmount(amount);
+        userAccountRepository.save(connectedUser);
     }
 
     @Override
-    public void creditBalanceAmountFromBank(BigDecimal amount, UserAccount userAccount) {
-        Balance userBalance = userAccount.getBalance();
-        BigDecimal actualBalance =userBalance.getUserBalance();
-        actualBalance.add(amount);
-        userBalance.setUserBalance(actualBalance);
-        balanceRepository.save(userBalance);
+    public void creditBalance(BigDecimal amount) {
+        UserAccount connectedUser = getConnectedUser();
+        connectedUser.creditAmount(amount);
+        userAccountRepository.save(connectedUser);
 
     }
-
 
 }

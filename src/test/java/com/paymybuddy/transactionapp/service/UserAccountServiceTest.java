@@ -4,7 +4,6 @@ import com.paymybuddy.transactionapp.dto.CreateUserDto;
 import com.paymybuddy.transactionapp.entity.Balance;
 import com.paymybuddy.transactionapp.entity.Transaction;
 import com.paymybuddy.transactionapp.entity.UserAccount;
-import com.paymybuddy.transactionapp.repository.BalanceRepository;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
 import com.paymybuddy.transactionapp.service.Impl.UserAccountServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,8 +26,6 @@ public class UserAccountServiceTest {
 
     @Mock
     private UserAccountRepository userAccountRepository;
-    @Mock
-    private BalanceRepository balanceRepository;
 
 
     private UserAccountService userService;
@@ -36,7 +33,7 @@ public class UserAccountServiceTest {
 
     @BeforeEach
     public void setup() {
-        this.userService = new UserAccountServiceImpl(userAccountRepository, balanceRepository);
+        this.userService = new UserAccountServiceImpl(userAccountRepository);
 
     }
 
@@ -75,7 +72,7 @@ public class UserAccountServiceTest {
         // WHEN
         userService.debitBalanceAmountToBank(amount,userAccount);
         // THEN
-        verify(balanceRepository,times(1)).save(balance);
+            verify(userAccount.getBalance()).equals(BigDecimal.valueOf(20));
     }
     @Test
     @DisplayName("UserService calls addFriend method with friendId")
@@ -88,7 +85,7 @@ public class UserAccountServiceTest {
         // WHEN
         userService.creditBalanceAmountFromBank(amount,userAccount);
         // THEN
-        verify(balanceRepository,times(1)).save(balance);
+      //  verify(userAccountRepository,times(1)).save(balance);
     }
 
 

@@ -22,7 +22,7 @@ public interface UserAccountService {
     void deleteConnection(String connectionEmail);
 
     //function
-    void debitBalanceAmountToBank(BigDecimal amount, UserAccount userAccount);
-    void creditBalanceAmountFromBank(BigDecimal amount, UserAccount userAccount);
+    void debitBalance(BigDecimal amount);
+    void creditBalance(BigDecimal amount);
 
 }

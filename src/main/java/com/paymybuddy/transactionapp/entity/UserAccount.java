@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_account")
-public class UserAccount implements Serializable,UserDetails {
+public class UserAccount implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -36,8 +37,7 @@ public class UserAccount implements Serializable,UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(mappedBy = "user")
-    private Balance balance;
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @OneToMany
     private List<UserAccount> connections = new ArrayList<>();

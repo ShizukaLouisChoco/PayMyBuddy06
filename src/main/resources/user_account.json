@@ -1,20 +1,16 @@
 [
   {
-    "id": "001",
-    "email": "user1@example.com",
-    "username": "user1",
-    "password": "password1"
+    "_class": "com.paymybuddy.transactionapp.entity.UserAccount",
+    "email": "user@example.com",
+    "username": "user",
+    "password": "$2y$10$UqGJbMRST08wLaoYuYeIvekD1et0ctjIm5WNRTTi.wxqzAqCu.On6",
+    "balance":100.0
   },
   {
-    "id": "002",
+    "_class": "com.paymybuddy.transactionapp.entity.UserAccount",
     "email": "user2@example.com",
     "username": "user2",
-    "password": "password2"
-  },
-  {
-    "id": "003",
-    "email": "user3@example.com",
-    "username": "user3",
-    "password": "password3"
+    "password": "$2y$10$5Xih8GXWe90i2yeQppLr3OG42HDZaRrnwxOf2d/MAEt7b8KVRvq7W",
+    "balance":100.0
   }
 ]
