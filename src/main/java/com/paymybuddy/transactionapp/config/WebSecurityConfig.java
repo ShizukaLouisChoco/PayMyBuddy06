@@ -1,24 +1,21 @@
 package com.paymybuddy.transactionapp.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -29,8 +26,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .requestMatchers("/register").permitAll()
-                .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/static/css/**").permitAll()
+                .requestMatchers(toH2Console()).permitAll()
+                //.requestMatchers("/static/css/**").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .formLogin()
@@ -49,34 +46,15 @@ public class WebSecurityConfig {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .permitAll()
                 .and()
-                .csrf().ignoringRequestMatchers("/h2-console/**")
-                .and()
-                .headers().frameOptions().sameOrigin();
-
-
-//                .requestMatchers(/*"/","/signin","h2-console/**"*/"/**").permitAll()
-//                .requestMatchers("/admin").hasAnyAuthority("ADMIN")
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login.html")
-//                .usernameParameter("email")
-//                .permitAll()
-//                .and()
-//                .userDetailsService(userDetailsService)
-//                .logout()
-//                .invalidateHttpSession(true)
-//                .clearAuthentication(true)
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-//                .and()
-//                .rememberMe()
-//                .key("uniqueAndSecret")
-//                .rememberMeParameter("rememberMe")
-//                .tokenValiditySeconds(24 * 60 * 60)
-//                .and()
-//                .formLogin()
-//                .defaultSuccessUrl("/home", true);
-
+                .csrf(csrf -> {
+                    try {
+                        csrf .ignoringRequestMatchers(toH2Console())
+                        .and()
+                        .headers().frameOptions().sameOrigin();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
         return http.build();
     }
 
