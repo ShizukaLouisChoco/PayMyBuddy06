@@ -16,4 +16,17 @@
     <div th:replace="~{header::subheader(${page})}"></div>
 </div>
 <!--contents-->
+<div class="contents">
+    <section>
+        <div class="addContact">
+            <form th:method="post" th:action="@{/contact}">
+                <label for="email">Please submit your friend's email to add
+                <input type="text"  id="email" th:name="email" th:object="${email}" placeholder="your friend's email"></input>
+                </label>
+                <input type="submit" th:value="Submit">
+            </form>
+        </div>
+
+    </section>
+</div>
 
