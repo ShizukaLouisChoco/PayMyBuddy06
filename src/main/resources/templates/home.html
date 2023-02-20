@@ -17,8 +17,8 @@
     <div th:replace="~{header::subheader(${page})}"></div>
 <!--contents-->
 <h2>Welcome to the Home Page!</h2>
-<p th:if="${loggedIn}">You are logged in as <span th:text="${username}"></span>.</p>
-<a th:href="@{/transaction}">View Transactions</a>
+<p th:if="${userAccount}">You are logged in as <span th:text="${userAccount.username}"></span>.</p>
+<a th:href="@{/transfer}">View Transactions</a>
 </div>
 </body>
 </html>

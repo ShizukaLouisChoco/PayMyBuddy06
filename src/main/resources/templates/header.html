@@ -10,16 +10,16 @@
     <div class="Logo">Pay My Buddy</div>
     <nav>
         <ul>
-            <li><a th:class="${#strings.equals(page, 'home')}?'athis'" href="/user/home" th:href="@{/user/home}">Home</a></li>
-            <li><a th:class="${#strings.equals(page, 'transfer')}?'athis'" href="/user/transfer" th:href="@{/user/transfer}">Transfer</a></li>
-            <li><a th:class="${#strings.equals(page, 'profile')}?'athis'" href="/user/profile" th:href="@{/user/profile}">Profile</a></li>
-            <li><a th:class="${#strings.equals(page, 'contact')}?'athis'" href="/user/contact" th:href="@{/user/contact}">Contact</a></li>
-            <li><a th:class="${#strings.equals(page, 'logOff')}?'athis'" href="/user/logoff" th:href="@{/user/logoff}">Log off</a></li>
+            <li><a th:class="${#strings.equals(page, 'home')}?'athis'" href="/home" th:href="@{/home}">Home</a></li>
+            <li><a th:class="${#strings.equals(page, 'transfer')}?'athis'" href="/transfer" th:href="@{/transfer}">Transfer</a></li>
+            <li><a th:class="${#strings.equals(page, 'profile')}?'athis'" href="/profile" th:href="@{/profile}">Profile</a></li>
+            <li><a th:class="${#strings.equals(page, 'contact')}?'athis'" href="/contact" th:href="@{/contact}">Contact</a></li>
+            <li><a th:class="${#strings.equals(page, 'logOff')}?'athis'" href="/logoff" th:href="@{/logoff}">Log off</a></li>
         </ul>
     </nav>
 </header>
 <div th:fragment="subheader(page)">
-    <a class="athis" href="/user/home" th:href="@{/user/home}">Home</a> / <span class="color" th:text="${page}"></span>
+    <a class="athis" href="/home" th:href="@{/home}">Home</a> / <span class="color" th:text="${page}"></span>
 </div>
 </body>
 </html>
