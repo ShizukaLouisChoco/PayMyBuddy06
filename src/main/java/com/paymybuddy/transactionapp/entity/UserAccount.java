@@ -25,24 +25,25 @@ public class UserAccount implements Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Email address is required")
-    @Column(nullable = false, unique=true)
-    @Size(min = 5, max = 30)
+    @Column(nullable = false)
+    @Size(min = 2, max = 30)
     private String email;
 
-    @NotBlank(message = "username is required")
     @Column(nullable = false)
     private String username;
 
 
     @Column(nullable = false)
-    @NotBlank(message = "password is required")
     @Size(min = 5)
     private String password;
 
     private BigDecimal balance = BigDecimal.ZERO;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "USER_ACCOUNT_CONNECTIONS",
+            joinColumns = @JoinColumn(name = "USER_ACCOUNT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "CONNECTION_ID"))
     private List<UserAccount> connections = new ArrayList<>();
 
 

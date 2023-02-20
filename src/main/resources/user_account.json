@@ -4,13 +4,40 @@
     "email": "user@example.com",
     "username": "user",
     "password": "$2y$10$UqGJbMRST08wLaoYuYeIvekD1et0ctjIm5WNRTTi.wxqzAqCu.On6",
-    "balance":100.0
+    "balance":100.0,
+    "connections":[]
   },
   {
     "_class": "com.paymybuddy.transactionapp.entity.UserAccount",
     "email": "user2@example.com",
     "username": "user2",
     "password": "$2y$10$5Xih8GXWe90i2yeQppLr3OG42HDZaRrnwxOf2d/MAEt7b8KVRvq7W",
-    "balance":100.0
+    "balance":100.0,
+    "connections": [ {
+      "_class": "com.paymybuddy.transactionapp.entity.UserAccount",
+      "id": 1,
+      "email": "user@example.com",
+      "username": "user",
+      "password": "$2y$10$UqGJbMRST08wLaoYuYeIvekD1et0ctjIm5WNRTTi.wxqzAqCu.On6",
+      "balance":100.0,
+      "connections":[]
+    } ]
+  },
+  {
+    "_class": "com.paymybuddy.transactionapp.entity.UserAccount",
+    "id": 3,
+    "email": "user3@example.com",
+    "username": "user3",
+    "password": "$2a$08$n3uUE.lRs4/6vDDsw7CAe.5TDZ0i12SP9dZ1TB684GlQ/xs.WyEUu",
+    "balance":100.0,
+    "connections": [{
+      "_class": "com.paymybuddy.transactionapp.entity.UserAccount",
+      "id": 1,
+      "email": "user@example.com",
+      "username": "user",
+      "password": "$2y$10$UqGJbMRST08wLaoYuYeIvekD1et0ctjIm5WNRTTi.wxqzAqCu.On6",
+      "balance":100.0,
+      "connections":[]
+    }]
   }
 ]

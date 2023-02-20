@@ -13,7 +13,8 @@ public class JpaConfig {
     public Jackson2RepositoryPopulatorFactoryBean getRepositoryPopulator() {
         Jackson2RepositoryPopulatorFactoryBean factory = new Jackson2RepositoryPopulatorFactoryBean();
         factory.setResources(new Resource[]{
-                new ClassPathResource("user_account.json")
+                new ClassPathResource("user_account.json"),
+                new ClassPathResource("transaction.json")
         });
         return factory;
     }
