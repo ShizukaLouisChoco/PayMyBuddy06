@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
@@ -16,26 +16,28 @@
     <div th:replace="~{header::subheader(${page})}"></div>
 </div>
 <!--contents-->
-<h1>Register</h1>
-<form th:action="@{/register}" th:object="${registerDto}" method="POST" enctype="utf8">
+<section class="register">
+<div id="bigLogo">Pay My Buddy</div>
+<form th:action="@{/register}" th:object="${registerDto}" method="POST">
     <div>
-        <label for="username">Username</label>
+        <label for="username">Username<br/></label>
         <input type="text" th:field="*{username}" id="username" placeholder="Username here"/>
         <p th:if="${#fields.hasErrors('username')}" th:class="${#fields.hasErrors('username')}? error" th:errorclass="error" th:errors="*{username}">Validation error</p>
     </div>
     <div>
-        <label for="email">email</label>
+        <label for="email">email<br/></label>
         <input type="email" th:field="*{email}" id="email" placeholder="email here"/>
         <p th:if="${#fields.hasErrors('email')}" th:class="${#fields.hasErrors('email')}? error" th:errorclass="error" th:errors="*{email}">Validation error</p>
     </div>
     <div>
-        <label for="password">password</label>
+        <label for="password">password<br></label>
         <input type="password" th:field="*{password}" id="password" placeholder="password here"/>
         <p th:if="${#fields.hasErrors('password')}" th:class="${#fields.hasErrors('password')}? error" th:errorclass="error" th:errors="*{password}">Validation error</p>
     </div>
-    <button type="submit">Create</button>
-</form>
 
-<a th:href="@{/login}" >login</a>
+    <button class="btn btn--bleu" type="submit">Create</button>
+</form>
+<a th:href="@{/login}" >Return to login page</a>
+</section>
 </body>
 </html>
