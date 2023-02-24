@@ -7,6 +7,11 @@
     <title>Profile</title>
     <link href="../static/css/paymybuddy.css" th:href="@{/css/paymybuddy.css}" rel="stylesheet"/>
     <link href="../static/css/profile.css" th:href="@{/css/profile.css}" rel="stylesheet"/>
+    <link href="../static/css/header.css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <!--Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
 </head>
 <body>
 <!--header-->
@@ -16,26 +21,12 @@
 </div>
 <!--contents-->
 <section>
-    <div id="signedIn">
-
-        <h1 id="bigLogo">Pay My Buddy</h1>
-
-        <form method="post" th:action="@{/signedin}" th:object="${'userAccount'}">
-            <p th:if="${#fields.hasErrors('username')}" th:errorclass="error" th:errors="*{'username'}"></p>
-            <label> username </label>
-            <input type="text" th:field="*{'username'}"><br>
-            <p th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{'email'}"></p>
-            <label> email </label>
-            <input type="email" th:field="*{'email'}"><br>
-            <p th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{'password'}"></p>
-            <label> password </label>
-            <input type="password" th:field="*{'password'}"><br>
-            <button type="submit">Create</button>
-            <h1>Output Page</h1>
-            <p>Thank you for your submitting</p>
-            <p>Your username is : <span th:text="${username}"></span></p>
-            <p>Your email is : <span th:text="${email}"></span></p>
-        </form>
+    <div class="signedIn">
+        <div th:object="${userAccount}">
+            <p>Your username is :<span th:text="*{username}"></span></p>
+            <p>Your email is : <span th:text="*{email}"></span></p>
+            <p>Your balance is : <span th:text="*{balance}"></span></p>
+        </div>
     </div>
 </section>
 </body>
