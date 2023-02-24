@@ -1,14 +1,115 @@
+/*Send Money part*/
+.upperSendMoneyContainer{
+    height :20px;
+    width: 759px;
+    margin: 10px 0 20px 0;
+}
+.blockContainerCenterRightLeft{
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+    align-items: center;
+}
+.blockRightLeft{
+    display: flex;
+}
+
+.sendMoneyContainer{
+    background-color: var(--gray-color);
+    height :150px;
+    width: 759px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.blockContainerCenter{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+.block{
+    display: inline-block;
+    display: flex;
+    margin: auto;
+}
+
+
+/*In send money*/
+.selectAConnection{
+    width:160px;
+}
+option {
+    text-align: center;
+}
+.description{
+    width: 160px;
+}
+#description{
+    text-align: center;
+}
+.euro{
+    width:160px;
+    height:30px;
+}
+.centerright{
+    height: 30px;
+    width:160px;
+    min-width: 160px;
+    background-color: var(--white-color);
+    border: var(--darkgray-color) 0.5px solid;
+}
+input{
+    height: 28px;
+}
+select{
+    height: 30px;
+}
+.euro input{
+    border: none;
+    text-align: right;
+    font-size: 1em;
+    background-color: transparent;
+    margin-right: 20px;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    opacity: 1;
+    height: 35px;
+    border: var(--black-color) solid 1px;
+    margin-right: 15px;
+}
+.pay{
+    width:100px;
+    height:30px;
+    float: left;
+    vertical-align:  middle;
+}
+
+
+
+/*commun*/
+h2{
+    font-size: 1.3em;
+    margin-top: 20px;
+}
+
+
+/*My Transaction part*/
 table{
     border-collapse: collapse;
     border-spacing: 0;
     table-layout: fixed;
-    width: 100%;
-    border:solid 1px #444040;
-    min-width: 760px;
+    border:solid 1px var(--black-color);
+    width: 760px;
+    margin-bottom: 10px;
 }
 table th{
-    color: white;
-    background-color : #5aad5a;
+    color: var(--white-color);
+    background-color : var(--green-color);
     text-align: center;
     padding: 10px 0;
     width: 100%;
@@ -17,7 +118,7 @@ table th{
 }
 
 tr:nth-of-type(odd) {
-    background-color : #d2d0cd;
+    background-color : var(--gray-color);
 }
 
 table td{
@@ -27,7 +128,7 @@ table td{
 }
 
 table td a{
-    color: white;
+    color: var(--white-color);
     padding:5px 20px;
     border-radius: 30px;
     font-weight: bold;
@@ -54,188 +155,50 @@ table th.popular span.no1{
 
 table th.popular span.inner{
     position: absolute;
-    color:white;
+    color:var(--white-color);
     left: 0;
     bottom: 0;
     display: block;
     width: 180px;
     padding: 10px 0;
 }
-.box{
-    width:30%;
-    margin: 10px;
-}
-
-.btn,
-a.btn,
-button.btn {
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1;
-    position: relative;
-    display: inline-block;
-    padding: 7px 25px;
-    text-align: center;
-    vertical-align: middle;
-    text-decoration: none;
-    border-radius: 0.4rem;
-}
-
-.btn--green{
-    color: #fff;
-    background-color: #3c9c3c;
-    width:150px;
-    height: 20px;
-
-
-}
-.btn--bleu{
-    color: #fff;
-    background-color: #2556d3;
-    float: right;
-    margin-top: 10px;
-}
-
-.selectAConnection{
-    width:30%;
-    min-width: 200px;
-    height:30px;
-    float: left;
-    vertical-align:  middle;
-    padding: 0px 0px 0px 3%;
-}
-option {
-    text-align: center;
-}
-select{
-    height:33px;
-    width: 200px;
-}
-.euro{
-    width:30%;
-    min-width: 150px;
-    height:30px;
-    float: left;
-    vertical-align:  middle;
-    padding: 0;
-    padding: 0px 0px 0px 3%;
-}
-.centerright{
-    height: 32px;
-    width:26%;
-    min-width: 160px;
-    background-color: #fff;
-    border: #444040 1px solid;
-}
-.euro input{
-    border: none;
-    text-align: right;
-    font-size: 1em;
-    height: 32px;
-    background-color: transparent;
-}
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    opacity: 1;
-}
-.pay{
-    width:30%;
-    min-width: 200px;
-    height:20px;
-    float: left;
-    vertical-align:  middle;
-    padding: 0px 0px 0px 3%;
-}
-.sendMoney{
-    background-color: #e5e3e3;
-    padding: 30px;
-    float:  left;
-    width:100%;
-    max-width: 945px;
-}
-.transferSection{
-    background-color: #e5e3e3;
-    width:100%;
-    padding: 0;
+/*pagination part*/
+#pagination nav{
     display: flex;
-    min-width: 500px;
-
-}
-.upperSendMoney{
-    vertical-align:  middle;
-}
-.upperSendMoney.h2{
-    float: left;
-}
-.upperSendMoney.a{
-    float: right;
-}
-.inline{
-    padding:  0px 2px;
-    height: 30px;
-    text-decoration: none;
-    margin: 10px 5px;
+    justify-content: center;
+    margin-top: 0;
 }
 
-
-h2{
-    font-size: 1.3em;
-    padding-top: 10px;
-}
-.page{
-    overflow: hidden;
-    text-align: center;
-    margin: 0 auto;
-}
 .pagination {
-    display: flex;
     padding: 0;
-    text-align: center;
+    display: flex;
     margin: 0;
     justify-content: center;
+    list-style-type: none;
 }
-.Pagination-Item-Link {
-    flex-wrap: wrap;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 45px;
-    height: 45px;
-    background: #fff;
-    border: solid 1px #111;
-    font-size: 14px;
-    color: #2556d3;
-    font-weight: bold;
-    pointer-events: none;
-    padding: 0 -5px;
-    text-decoration: none;
-
+.pagination li{
+    width:20px;
+    height: 20px;
+    margin-right: 20px;
 }
-ul{
-    text-decoration: none;
-}
-.pagination {
-    display: inline-block;
-}
-
-.pagination li {
-    display: inline-block;
-    margin: 0 5px;
-}
-
 .pagination li a {
-    color: black;
-    padding: 5px 10px;
-    border: 1px solid black;
+    color: var(--black-color);
+    border: 1px solid var(--darkgray-color);
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    text-decoration: none;
+
 }
 
 .pagination li.active a {
-    background-color: black;
-    color: white;
-    border: 1px solid black;
+    background-color: var(--black-color);
+    color: var(--white-color);
+    border: 1px solid var(--black-color);
 }
 
 .pagination li.disabled a {
-    color: gray;
+    color: var(--darkgray-color);
     pointer-events: none;
 }
