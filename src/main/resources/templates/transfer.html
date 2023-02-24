@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Transfer</title>
@@ -20,75 +20,79 @@
     <section>
             <div class="upperSendMoney">
                 <h2 style="display:inline-block;">Send Money</h2>
-                <a th:href="@{/connection}">
+                <a th:href="@{/contact}">
                     <button type="button" class="btn btn--bleu">Add Connection</button>
                 </a>
             </div>
-            <div class="sendMoney">
-                <form method="POST" th:action="@{/addtransaction}" th:object="${transactionDTO}">
-                    <!--transactionDTO needs creditor, amount and description-->
-                    <div class="paramerror" th:if="${param.errorMessage}" th:text="${param.errorMessage}"></div>
-                   <!--Select A connection-->
-                    <div class="left selectAConnection">
-                        <input type="hidden" th:field="*{connections}">
-                        <select th:field="*{connection.username}" required>
-                            <option th:if="${connections.isEmpty}" value="">No connection added</option>
-                            <option th:unless="${connections.isEmpty}" value="">Select A Connection</option>
-                            <option  th:each="connection : ${connections}" th:value="${username}" th:text="${username}" id="userName"></option>
-                        </select>
-                    </div>
-                    <!--description to add-->
-                    <!--amount-->
-                    <div class="center euro">
-                        <input th:unless="${connections.isEmpty}" type="number" min="2.00" step="0.01" th:field="*{amount}" th:data-max="${maxAmount}" placeholder="0€ ">
-                    </div>
-                    <div class="right pay">
-                        <input type="submit" th:unless="${connections.isEmpty}" class="btn btn--green" th:value="Pay">
-                    </div>
-                </form>
-            </div>
+           
+             <div class="sendMoney"> 
+                 <form th:method="post" th:action="@{/transfer}" th:object="${transactionDto}">
+                   <!--transactionDto needs creditor, amount and description-->
+                     <div class="paramerror" th:if="${param.errorMessage}" th:text="${param.errorMessage}"></div> 
+                     <!--Select A connection -->
+                     <div class="left selectAConnection">
+                         <label for="id">
+                             <select th:field="*{creditorId}" required>
+                                 <option th:if="${connections.isEmpty}" value="">No connection added</option> 
+                                 <option th:unless="${connections.isEmpty}" value="">Select A Connection</option> 
+                                 <option  th:each="connection : ${connections}" th:value="${connection.getId()}" th:text="${connection.getUsername()}" id="id"></option>
+                             </select> 
+                         </label> 
+                     </div> 
+                      <!--description to add -->
+                     <div class="centerleft description"> 
+                         <label for="description"></label> 
+                         <input th:unless="${connections.isEmpty}" type="text" th:field="*{description}" id="description" placeholder="Description">
+                     </div> 
+                      <!--amount -->
+                     <div class="centerright euro"> 
+                         <label for="amount"></label> 
+                         <input th:unless="${connections.isEmpty}" type="number" min="2.00" step="0.01" th:field="*{amount}" id="amount" placeholder="0€ "> 
+                     </div> 
+                     <div class="right pay"> 
+                         <input type="submit" th:unless="${connections.isEmpty}" class="btn btn--green" th:value="Pay"> 
+                     </div> 
+                 </form> 
+             </div> 
         </section>
-        <section>
-            <div class="sectionTitle">My Transactions</div>
-            <table>
-                <thead>
-                <tr>
-                    <th>Connections</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:if="${transactions.isEmpty()}">
-                    <td colspan="3">No transaction</td>
-                </tr>
-                <tr th:each="transaction, iterstat : ${transactions}" th:class="${iterstat.odd}?'odd'" th:classappend="!${transaction.isDebtor}?'colorred'" >
-                    <td th:text="${transaction.getcreditor().getUsername()}!=null?${transaction.getCreditor()}:'unsubscribed'"></td>
-                    <td th:text="${transaction.description}"></td>
-                    <td th:text="${transaction.amount}"></td>
-                </tr>
-                </tbody>
-            </table>
+       <section> 
+           <div class="sectionTitle">My Transactions</div> 
+           <table> 
+               <thead> 
+               <tr> 
+                   <th>Connections</th> 
+                   <th>Description</th> 
+                   <th>Amount</th> 
+               </tr> 
+               </thead> 
+               <tbody> 
+               <tr th:if="${transactionPage.isEmpty()}">
+                   <td colspan="3">No transaction</td> 
+               </tr> 
+               <tr th:each="transaction, iterstat : ${transactionPage.content}" th:class="${iterstat.odd}?'odd'">
+                   <td th:text="${transaction.creditor.username}"></td>
+                   <td th:text="${transaction.description}"></td>
+                   <td th:text="${transaction.amount}"></td>
+               </tr> 
+               </tbody> 
+           </table> 
             <!--pagenation-->
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li class="page-item" th:if="${selectedPage > 1}">
-                        <a class="page-link" th:href="@{/transfers(page=${selectedPage - 1})}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item" th:each="pageNumber : ${pageNumbers}" th:class="${pageNumber == selectedPage} ? 'active'">
-                        <a class="page-link" th:href="@{/transfers(page=${pageNumber})}">${pageNumber}</a>
-                    </li>
-                    <li class="page-item" th:if="${selectedPage < totalPages}">
-                        <a class="page-link" th:href="@{/transfers(page=${selectedPage + 1})}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <a th:href="@{/index}">Back to Index</a>
+           <nav>
+               <ul class="pagination">
+                   <li class="page-item" th:unless="${#vars.currentPage.orElse(1) == 1}">
+                       <a class="page-link" th:href="@{/transfer(page=${#vars.currentPage.orElse(2) - 1})}">&laquo;</a>
+                   </li>
+                   <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, transactionPage.totalPages +1)}" th:classappend="${pageNumber} == ${#vars.currentPage.orElse(1)} ? 'active' : ''" th:if="${not #vars.transactionPage.isEmpty()}">
+                       <a class="page-link" th:href="@{/transfer(page=${pageNumber})}" th:text="${pageNumber}"></a>
+                   </li>
+                   <li class="page-item" th:unless="${transactionPage.isEmpty() or #vars.currentPage.orElse(1) > transactionPage.totalPages }">
+                       <a class="page-link" th:href="@{/transfer(page=${#vars.currentPage.orElse(1) + 1})}">&raquo;</a>
+                   </li>
+
+               </ul>
+           </nav>
 </section>
+</div>
 </div>
 </body>
 </html>

@@ -36,6 +36,13 @@ public class Transaction implements Serializable {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
+    @Column
     private BigDecimal debitAmount;
+
+   @PrePersist
+    public void setDebitAmount() {
+        if (this.amount != null) {
+            this.debitAmount = amount.multiply(BigDecimal.valueOf(1.05));
+        }
+    }
 }

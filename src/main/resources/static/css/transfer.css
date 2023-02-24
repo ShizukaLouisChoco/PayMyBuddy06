@@ -120,7 +120,7 @@ select{
     padding: 0;
     padding: 0px 0px 0px 3%;
 }
-.center{
+.centerright{
     height: 32px;
     width:26%;
     min-width: 160px;
@@ -210,4 +210,32 @@ h2{
     padding: 0 -5px;
     text-decoration: none;
 
+}
+ul{
+    text-decoration: none;
+}
+.pagination {
+    display: inline-block;
+}
+
+.pagination li {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.pagination li a {
+    color: black;
+    padding: 5px 10px;
+    border: 1px solid black;
+}
+
+.pagination li.active a {
+    background-color: black;
+    color: white;
+    border: 1px solid black;
+}
+
+.pagination li.disabled a {
+    color: gray;
+    pointer-events: none;
 }

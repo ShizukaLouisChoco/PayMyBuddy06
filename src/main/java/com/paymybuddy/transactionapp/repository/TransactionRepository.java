@@ -4,6 +4,7 @@ import com.paymybuddy.transactionapp.dto.TransactionDto;
 import com.paymybuddy.transactionapp.entity.Transaction;
 import com.paymybuddy.transactionapp.entity.UserAccount;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -20,7 +21,7 @@ public interface TransactionRepository extends PagingAndSortingRepository<Transa
 
     //read
     List<Transaction> findByCreditor(Long userAccountId);
-    List<Transaction> findByDebtor(Long userAccountId);
-    List<Transaction> findAllByDebtor(Long userAccountId, Pageable pageable);
+
+    Transaction save(Transaction transaction);
 
 }
