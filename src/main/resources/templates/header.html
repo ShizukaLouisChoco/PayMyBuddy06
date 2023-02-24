@@ -4,21 +4,27 @@
     <meta charset="UTF-8">
     <link href="../static/css/paymybuddy.css" th:href="@{/css/paymybuddy.css}" rel="stylesheet"/>
     <link href="../static/css/header.css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <!--Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
 </head>
 <body>
 <header th:fragment="header(page)">
-    <div class="Logo">Pay My Buddy</div>
+    <div class="header__flex">
+    <a th:href="@{/home}" href="/home" id="bigLogo">Pay My Buddy</a>
     <nav>
         <ul>
-            <li><a th:class="${#strings.equals(page, 'home')}?'athis'" href="/home" th:href="@{/home}">Home</a></li>
-            <li><a th:class="${#strings.equals(page, 'transfer')}?'athis'" href="/transfer" th:href="@{/transfer}">Transfer</a></li>
-            <li><a th:class="${#strings.equals(page, 'profile')}?'athis'" href="/profile" th:href="@{/profile}">Profile</a></li>
-            <li><a th:class="${#strings.equals(page, 'contact')}?'athis'" href="/contact" th:href="@{/contact}">Contact</a></li>
-            <li><a th:class="${#strings.equals(page, 'logOff')}?'athis'" href="/logoff" th:href="@{/logoff}">Log off</a></li>
+            <li><a th:class="${#strings.equals(page, 'Home')}?'athis'" href="/home" th:href="@{/home}">Home</a></li>
+            <li><a th:class="${#strings.equals(page, 'Transfer')}?'athis'" href="/transfer" th:href="@{/transfer}">Transfer</a></li>
+            <li><a th:class="${#strings.equals(page, 'Profile')}?'athis'" href="/profile" th:href="@{/profile}">Profile</a></li>
+            <li><a th:class="${#strings.equals(page, 'Contact')}?'athis'" href="/contact" th:href="@{/contact}">Contact</a></li>
+            <li><a th:class="${#strings.equals(page, 'LogOff')}?'athis'" href="/logoff" th:href="@{/logoff}">Log off</a></li>
         </ul>
     </nav>
+    </div>
 </header>
-<div th:fragment="subheader(page)">
+<div class="homebar" th:fragment="subheader(page)">
     <a class="athis" href="/home" th:href="@{/home}">Home</a> / <span class="color" th:text="${page}"></span>
 </div>
 </body>
