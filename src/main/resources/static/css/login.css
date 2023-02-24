@@ -5,17 +5,7 @@ body {
 
 }
 
-#bigLogo {
-    font-size: 1.5em;
-    background: linear-gradient(to right, #5ba955, #a8dc69);
-    border-radius: 10px;
-    color: white;
-    padding: 10px;
-    margin: 20px auto;
-    width: 200px;
-    display: block;
-    text-align: center;
-}
+
 
 section {
     min-height: 80vh;
