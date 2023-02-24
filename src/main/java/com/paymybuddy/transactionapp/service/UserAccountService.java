@@ -20,5 +20,6 @@ public interface UserAccountService {
     //function
     void debitBalance(BigDecimal amount);
     void creditBalance(BigDecimal amount);
+    UserAccount update(UserAccount userAccountWithNewInfo);
 
 }

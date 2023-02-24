@@ -1,14 +1,14 @@
 package com.paymybuddy.transactionapp.service.Impl;
 
 import com.paymybuddy.transactionapp.dto.RegisterDto;
+import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.exception.EmailAlradyExistException;
 import com.paymybuddy.transactionapp.exception.FriendAlreadyExistException;
 import com.paymybuddy.transactionapp.exception.UserAccountNotFoundException;
-import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
 import com.paymybuddy.transactionapp.service.UserAccountService;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
@@ -39,7 +39,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         Optional<UserAccount> userExists = userAccountRepository.findByEmail(user.getEmail());
 
         if(userExists.isPresent()){
-            throw new EmailAlradyExistException("Email exists");
+            throw new EmailAlradyExistException("Your email address is already registered");
         }
         //if it's not used, save in database with encoded password
         UserAccount newUser = new UserAccount();
@@ -62,6 +62,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
         //if he/she is not in the list, add in the list
         connectedUser.getConnections().add(friend);
+        //update connectedUser
         return userAccountRepository.save(connectedUser);
     }
 
@@ -96,5 +97,16 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
 
         throw new AuthenticationCredentialsNotFoundException("User not connected");
+    }
+
+    @Transactional
+    public UserAccount update(UserAccount userAccountWithNewInfo) {
+        Optional<UserAccount> optionalUserAccount = Optional.of(userAccountRepository.getReferenceById(userAccountWithNewInfo.getId()));
+        UserAccount userAccountToUpdate = optionalUserAccount.orElseThrow();
+        userAccountToUpdate.setUsername(userAccountWithNewInfo.getUsername());
+        userAccountToUpdate.setBalance(userAccountWithNewInfo.getBalance());
+        userAccountToUpdate.setConnections(userAccountWithNewInfo.getConnections());
+        return userAccountRepository.save(userAccountToUpdate);
+
     }
 }
