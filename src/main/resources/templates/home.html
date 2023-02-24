@@ -4,6 +4,7 @@
     <title>Home</title>
     <link href="../static/css/paymybuddy.css" th:href="@{/css/paymybuddy.css}" rel="stylesheet"/>
     <link href="../static/css/home.css" th:href="@{/css/home.css}" rel="stylesheet"/>
+    <link href="../static/css/header.css" th:href="@{/css/header.css}" rel="stylesheet"/>
     <!--Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,9 +17,12 @@
     <header th:replace="~{header::header(${page})}"></header>
     <div th:replace="~{header::subheader(${page})}"></div>
 <!--contents-->
+    <section class="home">
+
 <h2>Welcome to the Home Page!</h2>
 <p th:if="${userAccount}">You are logged in as <span th:text="${userAccount.username}"></span>.</p>
-<a th:href="@{/transfer}">View Transactions</a>
+<a class="btn btn--green" th:href="@{/transfer}">View Transactions</a>
+    </section>
 </div>
 </body>
 </html>
