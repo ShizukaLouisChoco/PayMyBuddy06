@@ -1,0 +1,81 @@
+
+h2{
+    font-size: 1.3em;
+    margin-top: 20px;
+}
+
+
+/*My contact list part*/
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+    border:solid 1px var(--black-color);
+    width: 400px;
+    margin-bottom: 10px;
+}
+table th{
+    color: var(--white-color);
+    background-color : var(--green-color);
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    min-width:500px;
+    padding: 20px;
+}
+
+tr:nth-of-type(odd) {
+    background-color : var(--gray-color);
+}
+
+table td{
+    text-align: center;
+    width: 155px;
+    padding: 20px;
+}
+
+table td a{
+    color: var(--white-color);
+    padding:5px 20px;
+    border-radius: 30px;
+    font-weight: bold;
+}
+
+table .popular{
+    width: 180px;
+}
+
+table th.popular{
+    position: relative;
+}
+
+table th.popular span.no1{
+
+    top: -10px;
+    left:calc(50% - 30px);
+    width: 60px;
+    font-size: 10px;
+    border-radius: 15px;
+    line-height: 1;
+    padding: 5px;
+}
+
+table th.popular span.inner{
+
+    color:var(--white-color);
+    left: 0;
+    bottom: 0;
+    display: block;
+    width: 180px;
+    padding: 10px 0;
+}
+.addContact{
+    text-align: left;
+    padding: 30px 0;
+    margin: 10px;
+}
+.addContact input{
+    margin-top: 15px;
+    height: 30px;
+    width: 200px;
+}

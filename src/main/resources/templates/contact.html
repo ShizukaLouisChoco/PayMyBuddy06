@@ -4,6 +4,7 @@
     <title>Contact</title>
     <link href="../static/css/paymybuddy.css" th:href="@{/css/paymybuddy.css}" rel="stylesheet"/>
     <link href="../static/css/contact.css" th:href="@{/css/contact.css}" rel="stylesheet"/>
+    <link href="../static/css/header.css" th:href="@{/css/header.css}" rel="stylesheet"/>
     <!--Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,13 +21,30 @@
     <section>
         <div class="addContact">
             <form th:method="post" th:action="@{/contact}">
-                <label for="email">Please submit your friend's email to add
+                <label for="email">Please submit your friend's email to add<br/>
                 <input type="text"  id="email" th:name="email" th:object="${email}" placeholder="your friend's email"></input>
-                </label>
-                <input type="submit" th:value="Submit">
+                <br/></label>
+                <input class="btn btn--bleu" type="submit" th:value="Submit">
             </form>
         </div>
-
+        <div class="contact list">
+            <h2>Contact list</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Username</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${connections.isEmpty()}">
+                    <td>You have no contact yet</td>
+                </tr>
+                <tr th:each="connection:${connections}">
+                    <td th:text="*{connection.username}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </section>
 </div>
 
