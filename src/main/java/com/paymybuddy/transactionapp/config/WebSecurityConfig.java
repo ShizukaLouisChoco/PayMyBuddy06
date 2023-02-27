@@ -36,9 +36,9 @@ public class WebSecurityConfig {
                 .passwordParameter("password")
                 .defaultSuccessUrl("/home", true)
                 .permitAll()
-//                .and()
-//                .rememberMe()
-//                .rememberMeParameter("rememberMe")
+                .and()
+                .rememberMe()
+                .rememberMeParameter("rememberMe")
                 .and()
                 .logout()
                 .invalidateHttpSession(true)
@@ -46,15 +46,8 @@ public class WebSecurityConfig {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .permitAll()
                 .and()
-                .csrf(csrf -> {
-                    try {
-                        csrf .ignoringRequestMatchers(toH2Console())
-                        .and()
-                        .headers().frameOptions().sameOrigin();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                .headers(headers -> headers.frameOptions().disable())
+                .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()));
         return http.build();
     }
 
