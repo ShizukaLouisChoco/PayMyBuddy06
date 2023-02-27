@@ -22,4 +22,5 @@ public interface UserAccountService {
     void creditBalance(BigDecimal amount);
     UserAccount update(UserAccount userAccountWithNewInfo);
 
+    UserAccount getUserById(Long creditorId);
 }

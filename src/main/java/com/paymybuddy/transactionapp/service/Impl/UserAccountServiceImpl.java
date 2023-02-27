@@ -111,4 +111,9 @@ public class UserAccountServiceImpl implements UserAccountService {
         return userAccountRepository.save(userAccountToUpdate);
 
     }
+
+    @Override
+    public UserAccount getUserById(Long creditorId) {
+        return userAccountRepository.getReferenceById(creditorId);
+    }
 }
