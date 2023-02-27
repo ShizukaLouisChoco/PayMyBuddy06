@@ -1,7 +1,6 @@
 package com.paymybuddy.transactionapp.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -53,6 +52,9 @@ public class UserAccount implements Serializable {
 
 
     public void debitAmount(BigDecimal amount) {
+        if(balance.compareTo(amount) <= 0) {
+            throw new BalanceException();
+        }
         balance.subtract(amount);
     }
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Slf4j
 @Controller
 public class RegisterController {
 
@@ -25,11 +26,20 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String saveUserAccount(@Valid @ModelAttribute("registerDto") RegisterDto userAccount, BindingResult result)throws EmailAlradyExistException {
+    public String saveUserAccount(Model model, @Valid @ModelAttribute("registerDto") RegisterDto userAccount, BindingResult result) throws EmailAlradyExistException {
         if(result.hasErrors()){
+                return "register";
+        }
+
+        try {
+            userAccountService.createUser(userAccount);
+        }catch(Exception exception){
+            log.error(String.valueOf(exception));
+            model.addAttribute("error" , exception.getMessage());
             return "register";
         }
-        userAccountService.createUser(userAccount);
+
+
         //todo:emailalreadyexistになった時に、エラーメッセージとregisterpageに戻るor エラーページに。
         return "redirect:/login";
     }

@@ -34,6 +34,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 
     @Override
+    @Transactional
     public UserAccount createUser(RegisterDto user) throws EmailAlradyExistException{
         //verification if the email is already used
         Optional<UserAccount> userExists = userAccountRepository.findByEmail(user.getEmail());
@@ -86,6 +87,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     public void creditBalance(BigDecimal amount) {
         UserAccount connectedUser = getConnectedUser();
         connectedUser.creditAmount(amount);
+        // !!!!! Amount + Fare
         userAccountRepository.save(connectedUser);
 
     }

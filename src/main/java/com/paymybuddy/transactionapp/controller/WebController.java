@@ -17,27 +17,6 @@ public class WebController {
     }
 
     /**
-     * login page needs user's email and password
-     * url : "<a href="http://localhost:8080/login">...</a>"
-     * @return UserAccountServiceDto
-     */
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login";
-    }
-
-    /**
-     * logoff page
-     * url : "<a href="http://localhost:8080/logoff">...</a>"
-     * @return UserAccountServiceDto
-     */
-    @GetMapping("/logoff")
-    public String logOff() {
-
-        return "login";
-    }
-
-    /**
      * logged in user can enter this page.
      * url : "<a href="http://localhost:8080/login">...</a>"
      * @return UserAccountServiceDto

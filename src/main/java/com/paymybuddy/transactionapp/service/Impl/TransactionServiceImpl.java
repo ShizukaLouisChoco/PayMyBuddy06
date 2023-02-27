@@ -8,6 +8,7 @@ import com.paymybuddy.transactionapp.repository.TransactionRepository;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
 import com.paymybuddy.transactionapp.service.TransactionService;
 import com.paymybuddy.transactionapp.service.UserAccountService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +24,12 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
     private final UserAccountService userAccountService;
-    private final UserAccountRepository userAccountRepository;
     private final TransactionRepository transactionRepository;
 
-    @Autowired
-    public TransactionServiceImpl(TransactionRepository transactionRepository, UserAccountService userAccountService, UserAccountRepository userAccountRepository) {
-        this.transactionRepository = transactionRepository;
-        this.userAccountService = userAccountService;
-        this.userAccountRepository = userAccountRepository;
-    }
 
     /**
      * user make a transaction to friend with
@@ -44,7 +39,8 @@ public class TransactionServiceImpl implements TransactionService {
      */
     @Override
     @Transactional
-    public TransactionDto createTransaction(TransactionDto transaction) {
+    public Transaction createTransaction(TransactionDto transaction) {
+        /*
         UserAccount connectedUser = userAccountService.getConnectedUser();
         //verifiy balance is ok for transaction
         BigDecimal debitAmount = transaction.getAmountForDebtor();
@@ -63,23 +59,25 @@ public class TransactionServiceImpl implements TransactionService {
         BigDecimal newCreditorBalance = creditorBalance.add(newTransaction.getAmount());
         creditor.setBalance(newCreditorBalance);
         userAccountService.update(creditor);
-        return transaction;
+
+        Transaction newTransaction = new Transaction(null,creditor,debtor,transaction.getAmount(),transaction.getDescription(),transaction.getAmountForCreditor());
+
+            transactionRepository.save(newTransaction);
+
+
+        return newTransaction;
     }
 
     @Override
-    public List<Transaction> findByCreditor(Long id) {
-        return transactionRepository.findByCreditor(id);
+    public List<Transaction> findAllByCreditorId(Long id) {
+        return transactionRepository.findAllByCreditorId(id);
     }
 
 
     @Override
     public Page<Transaction> findPaginated(Pageable pageable) {
-
-        Page<Transaction> page = new PageImpl<>(transactionRepository.findAll(pageable)
-                .filter(transaction -> transaction.getDebtor().equals(userAccountService.getConnectedUser())).toList());
-        return page;
-
-
+        Long debtorId = userAccountService.getConnectedUser().getId();
+        return transactionRepository.findAllByDebtorId(debtorId,pageable);
     }
 }
 
