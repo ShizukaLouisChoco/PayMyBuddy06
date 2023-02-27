@@ -33,7 +33,7 @@ public class TransactionDto implements Serializable {
     @NotEmpty(message = "Description cannot be empty.")
     private String description;
 
-    public BigDecimal getAmountForDebtor() {
+    public BigDecimal getAmountForCreditor() {
         BigDecimal fee = BigDecimal.valueOf(0.05);
         return amount.subtract(amount.multiply(fee));
     }

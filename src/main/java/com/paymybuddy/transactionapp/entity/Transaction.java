@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -37,12 +36,12 @@ public class Transaction implements Serializable {
     private String description;
 
     @Column
-    private BigDecimal debitAmount;
+    private BigDecimal creditAmount;
 
    @PrePersist
     public void setDebitAmount() {
         if (this.amount != null) {
-            this.debitAmount = amount.multiply(BigDecimal.valueOf(1.05));
+            this.creditAmount = amount.multiply(BigDecimal.valueOf(0.95));
         }
     }
 }
