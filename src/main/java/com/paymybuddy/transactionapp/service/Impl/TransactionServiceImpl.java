@@ -3,6 +3,7 @@ package com.paymybuddy.transactionapp.service.Impl;
 import com.paymybuddy.transactionapp.dto.TransactionDto;
 import com.paymybuddy.transactionapp.entity.Transaction;
 import com.paymybuddy.transactionapp.entity.UserAccount;
+import com.paymybuddy.transactionapp.exception.BalanceException;
 import com.paymybuddy.transactionapp.repository.TransactionRepository;
 import com.paymybuddy.transactionapp.service.TransactionService;
 import com.paymybuddy.transactionapp.service.UserAccountService;
@@ -34,24 +35,13 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public Transaction createTransaction(TransactionDto transaction) {
-        /*
-        UserAccount connectedUser = userAccountService.getConnectedUser();
-        //verifiy balance is ok for transaction
-        BigDecimal debitAmount = transaction.getAmountForDebtor();
-        if (connectedUser.getBalance().compareTo(debitAmount) <= 0) {
-            throw new BalanceException();
-        }
-
-        Transaction newTransaction = new Transaction(null, userAccountRepository.getReferenceById(transaction.getCreditorId()), connectedUser, transaction.getAmount(), transaction.getDescription(), debitAmount);
-        transactionRepository.save(newTransaction);
-
-
-*/
-
             UserAccount debtor = userAccountService.getConnectedUser();
             UserAccount creditor = userAccountService.getUserById(transaction.getCreditorId());
 
         BigDecimal connectedUserBalance = debtor.getBalance();
+        if(connectedUserBalance.compareTo(transaction.getAmount()) < 0){
+            throw new BalanceException("Your balance is not enough to transfer this amount");
+        }
         BigDecimal newConnectedUserBalance = connectedUserBalance.subtract(transaction.getAmount());
         debtor.setBalance(newConnectedUserBalance);
         userAccountService.update(debtor);

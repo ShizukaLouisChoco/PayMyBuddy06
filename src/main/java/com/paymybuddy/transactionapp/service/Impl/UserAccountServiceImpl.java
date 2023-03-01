@@ -2,6 +2,7 @@ package com.paymybuddy.transactionapp.service.Impl;
 
 import com.paymybuddy.transactionapp.dto.RegisterDto;
 import com.paymybuddy.transactionapp.entity.UserAccount;
+import com.paymybuddy.transactionapp.exception.BalanceException;
 import com.paymybuddy.transactionapp.exception.EmailAlradyExistException;
 import com.paymybuddy.transactionapp.exception.FriendAlreadyExistException;
 import com.paymybuddy.transactionapp.exception.UserAccountNotFoundException;
@@ -79,15 +80,18 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public void debitBalance(BigDecimal amount) {
         UserAccount connectedUser = getConnectedUser();
+        BigDecimal actualBalance = connectedUser.getBalance();
+        if(actualBalance.compareTo(amount) < 0){
+            throw new BalanceException("Your balance is not enough to transfer this amount");
+        }
         connectedUser.debitAmount(amount);
         userAccountRepository.save(connectedUser);
     }
 
     @Override
-    public void creditBalance(BigDecimal amount) {
+    public void creditBalance(BigDecimal creditAmount) {
         UserAccount connectedUser = getConnectedUser();
-        connectedUser.creditAmount(amount);
-        // !!!!! Amount + Fare
+        connectedUser.creditAmount(creditAmount);
         userAccountRepository.save(connectedUser);
 
     }
