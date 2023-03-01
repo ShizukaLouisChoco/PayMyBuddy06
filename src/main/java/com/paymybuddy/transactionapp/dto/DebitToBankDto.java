@@ -11,29 +11,33 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-/**
- * DTO to create transaction
- * url : "/transaction"
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionDto implements Serializable {
+public class DebitToBankDto implements Serializable {
 
-    @NotNull(message = "Please select one from your contacts")
-    private Long creditorId;
-
-    @NotNull(message = "Amount cannot be empty.")
-    @DecimalMin(value = "0.01", message = "Amount must be greater than 0.00.")
-    private BigDecimal amount;
 
     @NotNull
     @Size(min = 3)
-    @NotEmpty(message = "Description cannot be empty.")
-    private String description;
+    @NotEmpty(message = "titulaire cannot be empty.")
+    private String titulaire;
 
-    public BigDecimal getAmountForCreditor() {
-        BigDecimal fee = BigDecimal.valueOf(0.05);
-        return amount.subtract(amount.multiply(fee));
-    }
+    @NotNull
+    @Size(min = 23, max=23)
+    @NotEmpty(message = "rib cannot be empty.")
+    private String rib;
+
+    @NotNull
+    @Size(min = 27, max = 27)
+    @NotEmpty(message = "iban cannot be empty.")
+    private String iban;
+
+    @NotNull
+    @Size(min = 8)
+    @NotEmpty(message = "swift cannot be empty.")
+    private String swift;
+    @NotNull(message = "Amount cannot be empty.")
+    @DecimalMin(value = "0.01", message = "Amount must be greater than 0.00.")
+    private BigDecimal debitAmount;
+
 }
