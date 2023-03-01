@@ -2,30 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link href="../static/css/paymybuddy.css" th:href="@{/css/paymybuddy.css}" rel="stylesheet"/>
-    <link href="../static/css/header.css" th:href="@{/css/header.css}" rel="stylesheet"/>
-    <!--Google font-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </head>
 <body>
-<header th:fragment="header(page)">
-    <div class="header__flex">
-    <a th:href="@{/home}" href="/home" id="bigLogo">Pay My Buddy</a>
-    <nav>
-        <ul>
-            <li><a th:class="${#strings.equals(page, 'Home')}?'athis'" href="/home" th:href="@{/home}">Home</a></li>
-            <li><a th:class="${#strings.equals(page, 'Transfer')}?'athis'" href="/transfer" th:href="@{/transfer}">Transfer</a></li>
-            <li><a th:class="${#strings.equals(page, 'Profile')}?'athis'" href="/profile" th:href="@{/profile}">Profile</a></li>
-            <li><a th:class="${#strings.equals(page, 'Contact')}?'athis'" href="/contact" th:href="@{/contact}">Contact</a></li>
-            <li><a th:class="${#strings.equals(page, 'LogOff')}?'athis'" href="/logoff" th:href="@{/logoff}">Log off</a></li>
-        </ul>
+<header th:fragment="header(page)" class="py-4">
+    <nav class="navbar">
+        <div class="container ">
+           <a th:href="@{/home}" href="/home" class="navbar-brand fw-bold bg-success bg-gradient p-1 rounded-3 text-light" >Pay My Buddy</a>
+                <ul class="nav justify-content-end">
+                    <li class="nav-item" >
+                        <a class="nav-link text-muted" th:class="${#strings.equals(page, 'Home')}?'font-weight-bold text-primary':'nav-link text-muted'" href="/home" th:href="@{/home}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" th:class="${#strings.equals(page, 'Transfer')}?'active':'nav-link text-muted'" href="/transfer" th:href="@{/transfer}">Transfer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" th:class="${#strings.equals(page, 'Profile')}?'active':'nav-link text-muted'" href="/profile" th:href="@{/profile}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" th:class="${#strings.equals(page, 'Contact')}?'active':'nav-link text-muted'" href="/contact" th:href="@{/contact}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" href="/logout" th:href="@{/logout}">Log off</a>
+                    </li>
+                </ul>
+        </div>
     </nav>
-    </div>
 </header>
-<div class="homebar" th:fragment="subheader(page)">
-    <a class="athis" href="/home" th:href="@{/home}">Home</a> / <span class="color" th:text="${page}"></span>
+<div class="container bg-light" th:fragment="subheader(page)">
+    <a class="active" href="/home" th:href="@{/home}">Home</a> / <span th:text="${page}"></span>
 </div>
 </body>
 </html>
