@@ -4,6 +4,7 @@ import com.paymybuddy.transactionapp.dto.RegisterDto;
 import com.paymybuddy.transactionapp.exception.EmailAlradyExistException;
 import com.paymybuddy.transactionapp.service.UserAccountService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
