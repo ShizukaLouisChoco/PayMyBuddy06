@@ -2,13 +2,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Contact</title>
-    <link href="../static/css/paymybuddy.css" th:href="@{/css/paymybuddy.css}" rel="stylesheet"/>
-    <link href="../static/css/contact.css" th:href="@{/css/contact.css}" rel="stylesheet"/>
-    <link href="../static/css/header.css" th:href="@{/css/header.css}" rel="stylesheet"/>
-    <!--Google font-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <!--header-->
@@ -17,34 +15,41 @@
     <div th:replace="~{header::subheader(${page})}"></div>
 </div>
 <!--contents-->
-<div class="contents">
     <section>
-        <div class="addContact">
-            <form th:method="post" th:action="@{/contact}">
-                <label for="email">Please submit your friend's email to add<br/>
-                <input type="text"  id="email" th:name="email" th:object="${email}" placeholder="your friend's email"></input>
-                <br/></label>
-                <input class="btn btn--bleu" type="submit" th:value="Submit">
-            </form>
-        </div>
-        <div class="contact list">
-            <h2>Contact list</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th>Username</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:if="${connections.isEmpty()}">
-                    <td>You have no contact yet</td>
-                </tr>
-                <tr th:each="connection:${connections}">
-                    <td th:text="*{connection.username}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
+<div class="container text-center mt-3">
+        <form th:method="post" th:action="@{/contact}">
+            <div class="row">
+                <label for="email">Please submit your friend's email to add</label>
+            </div>
+            <div class="row w-50 mt-3 mx-auto">
+                <input type="text" id="email" th:name="email" th:object="${email}" placeholder="your friend's email">
+            </div>
+            <div class="row w-25 p-3 mx-auto">
+                <button class="btn btn-success" type="submit" th:value="Submit">Add</button>
+            </div>
+        </form>
+</div>
+        <div class="container">
+<div class="row">
+    <h2>Contact list</h2>
+</div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Username</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${connections.isEmpty()}">
+        <td>You have no contact yet</td>
+    </tr>
+    <tr th:each="connection:${connections}">
+        <td th:text="*{connection.username}"></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</div>
+</section>
 </div>
 
