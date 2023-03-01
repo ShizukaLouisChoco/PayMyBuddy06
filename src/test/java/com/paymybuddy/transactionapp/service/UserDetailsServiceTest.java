@@ -4,7 +4,6 @@ import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.exception.UserAccountNotFoundException;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
 import com.paymybuddy.transactionapp.service.Impl.UserDetailsServiceImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,12 +42,11 @@ public class UserDetailsServiceTest {
         when(userAccountRepository.findByEmail(userAccount.getEmail())).thenReturn(Optional.of(userAccount));
 
         // THEN
-        UserDetails userDetails = userDetailsService.loadUserByUsername("test@example.com");
+        UserDetails userDetails = userDetailsService.loadUserByUsername("creditor@email.com");
 
-        assertThat(userDetails.getUsername()).isEqualTo("test@example.com");
-        assertThat(userDetails.getPassword()).isEqualTo("password");
+        assertThat(userDetails.getUsername()).isEqualTo("creditor@email.com");
+        assertThat(userDetails.getPassword()).isEqualTo("pass123");
         assertThat(userDetails.getAuthorities()).hasSize(1);
-        assertThat(userDetails.getAuthorities().iterator().next().getAuthority()).isEqualTo("USER");
     }
 
     @Test

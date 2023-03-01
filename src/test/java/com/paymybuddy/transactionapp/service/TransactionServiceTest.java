@@ -4,7 +4,6 @@ import com.paymybuddy.transactionapp.dto.TransactionDto;
 import com.paymybuddy.transactionapp.entity.Transaction;
 import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.repository.TransactionRepository;
-import com.paymybuddy.transactionapp.repository.UserAccountRepository;
 import com.paymybuddy.transactionapp.service.Impl.TransactionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,13 +26,11 @@ public class TransactionServiceTest {
     private TransactionService transactionService;
     @Mock
     private UserAccountService userAccountService;
-    @Mock
-    private UserAccountRepository userAccountRepository;
 
 
     @BeforeEach
     public void setup() {
-        this.transactionService = new TransactionServiceImpl(transactionRepository,userAccountService,userAccountRepository);
+        this.transactionService = new TransactionServiceImpl(userAccountService, transactionRepository);
 
     }
 
@@ -41,13 +38,20 @@ public class TransactionServiceTest {
     @DisplayName("TransactionService calls transactionRepository addTransaction method")
     public void TestCreateTransaction(){
         // GIVEN
-        UserAccount creditorAccount = new UserAccount(1L, "creditor@email.com","creditor1","pass123",null,null);
+        UserAccount debtorAccount = new UserAccount(1L, "debtor@email.com","debtor1","pass123",BigDecimal.valueOf(200),null);
+        UserAccount creditorAccount = new UserAccount(2L, "creditor@email.com","creditor1","pass123",BigDecimal.ZERO,null);
         TransactionDto transactionDto = new TransactionDto(creditorAccount.getId(), BigDecimal.valueOf(100),"test create transaction");
+        Transaction transaction = new Transaction(null,creditorAccount,debtorAccount,transactionDto.getAmount(),transactionDto.getDescription(),BigDecimal.valueOf(95.00) );
+        //TODO:95.00 95.0
+        when(userAccountService.getConnectedUser()).thenReturn(debtorAccount);
+        when(userAccountService.getUserById(creditorAccount.getId())).thenReturn(creditorAccount);
+
         // WHEN
+
         var result = transactionService.createTransaction(transactionDto);
 
         // THEN
-        verify(transactionRepository,times(1)).save(transactionDto);
+        verify(transactionRepository,times(1)).save(transaction);
     }
     @Test
     @DisplayName("TransactionService calls transactionRepository findByCreditor method ")
@@ -58,11 +62,11 @@ public class TransactionServiceTest {
         List<Transaction> expectedResult = List.of(new Transaction(100L,creditorAccount,debtorAccount,BigDecimal.valueOf(100),"test",BigDecimal.valueOf(3)));
 
         // WHEN
-        when(transactionRepository.findByCreditor(creditorAccount.getId())).thenReturn(expectedResult);
-        var result = transactionService.findByCreditor(creditorAccount.getId());
+        when(transactionRepository.findAllByCreditorId(creditorAccount.getId())).thenReturn(expectedResult);
+        var result = transactionService.findAllByCreditorId(creditorAccount.getId());
 
         // THEN
-        verify(transactionRepository,times(1)).findByCreditor(creditorAccount.getId());
+        verify(transactionRepository,times(1)).findAllByCreditorId(creditorAccount.getId());
         assertThat(result).isEqualTo(expectedResult);
     }
     @Test
@@ -71,9 +75,9 @@ public class TransactionServiceTest {
         // GIVEN
         UserAccount debtorAccount = new UserAccount(1L, "debtor@email.com","debtor1","pass123",null,null);
         // WHEN
-        var result = transactionService.findByCreditor(debtorAccount.getId());
+        var result = transactionService.findAllByCreditorId(debtorAccount.getId());
         // THEN
-        verify(transactionRepository,times(1)).findByCreditor(debtorAccount.getId());
+        verify(transactionRepository,times(1)).findAllByCreditorId(debtorAccount.getId());
 
     }
 
