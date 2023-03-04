@@ -2,7 +2,6 @@ package com.paymybuddy.transactionapp.controller;
 
 import com.paymybuddy.transactionapp.dto.CreditToBankDto;
 import com.paymybuddy.transactionapp.dto.DebitToBankDto;
-import com.paymybuddy.transactionapp.exception.BalanceException;
 import com.paymybuddy.transactionapp.service.UserAccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,7 +44,7 @@ public class ProfileController {
             for(ObjectError error : result.getAllErrors()){
                 errorList.add(error.getDefaultMessage());
             }
-            model.addAttribute("ValidationError", errorList);
+            model.addAttribute("errorMsg", errorList);
             return "/profile";
         }
 
@@ -57,17 +56,14 @@ public class ProfileController {
     public String CreditFromBank(@Validated @ModelAttribute("creditAmountDTO") CreditToBankDto creditAmountDto, BindingResult result,Model model){
         if(result.hasErrors()){
             //display validation errors
-            List<String> errorList = new ArrayList<String>();
+            List<String> errorList = new ArrayList<>();
             for(ObjectError error : result.getAllErrors()){
                 errorList.add(error.getDefaultMessage());
             }
-            model.addAttribute("ValidationError", errorList);
+            model.addAttribute("errorMsg", errorList);
             return "/profile";
         }
 
-        if(creditAmountDto == null | creditAmountDto.getCreditAmount().equals(BigDecimal.valueOf(0))){
-            throw new BalanceException("Amount cannot be empty");
-        }
         userAccountService.creditBalance(creditAmountDto.getCreditAmount());
         return "redirect:/profile";
     }

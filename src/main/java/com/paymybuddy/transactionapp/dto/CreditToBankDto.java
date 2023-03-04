@@ -15,6 +15,6 @@ import java.math.BigDecimal;
 public class CreditToBankDto implements Serializable {
 
     @NotNull(message = "Amount cannot be empty.")
-    @DecimalMin(value = "0.01", message = "Amount must be greater than 0.00.")
+    @DecimalMin(value = "0.00", message = "Amount must be greater than 0.00.")
     private BigDecimal creditAmount;
 }

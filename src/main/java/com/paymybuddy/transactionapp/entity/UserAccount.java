@@ -46,6 +46,10 @@ public class UserAccount implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "CONNECTION_ID"))
     private List<UserAccount> connections = new ArrayList<>();
 
+    public UserAccount(Long id) {
+         this.id = id;
+    }
+
 
     public boolean friendExists(Long id){
         return connections.stream().anyMatch(f -> f.id.equals(id));
@@ -53,8 +57,8 @@ public class UserAccount implements Serializable {
 
 
     public void debitAmount(BigDecimal amount) {
-        if(balance.compareTo(amount) <= 0) {
-            throw new BalanceException();
+        if(balance.compareTo(amount) < 0) {
+            throw new BalanceException("Your balance is not enough to transfer this amount");
         }
         balance=balance.subtract(amount);
     }
