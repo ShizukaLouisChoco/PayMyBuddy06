@@ -2,12 +2,15 @@ package com.paymybuddy.transactionapp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
 
+
 public class AbstractControllerTest {
 
+    @Autowired
     private ObjectMapper objectMapper;
 
     //to object method

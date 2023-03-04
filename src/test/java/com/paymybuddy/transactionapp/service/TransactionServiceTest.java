@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -36,12 +37,12 @@ public class TransactionServiceTest {
 
     @Test
     @DisplayName("TransactionService calls transactionRepository addTransaction method")
-    public void TestCreateTransaction(){
+    public void TestCreateTransaction() {
         // GIVEN
-        UserAccount debtorAccount = new UserAccount(1L, "debtor@email.com","debtor1","pass123",BigDecimal.valueOf(200),null);
-        UserAccount creditorAccount = new UserAccount(2L, "creditor@email.com","creditor1","pass123",BigDecimal.ZERO,null);
-        TransactionDto transactionDto = new TransactionDto(creditorAccount.getId(), BigDecimal.valueOf(100),"test create transaction");
-        Transaction transaction = new Transaction(null,creditorAccount,debtorAccount,transactionDto.getAmount(),transactionDto.getDescription(),BigDecimal.valueOf(95.00) );
+        UserAccount debtorAccount = new UserAccount(1L, "debtor@email.com", "debtor1", "pass123", BigDecimal.valueOf(200), null);
+        UserAccount creditorAccount = new UserAccount(2L, "creditor@email.com", "creditor1", "pass123", BigDecimal.ZERO, null);
+        TransactionDto transactionDto = new TransactionDto(creditorAccount.getId(), BigDecimal.valueOf(100), "test create transaction");
+        // Transaction transaction = new Transaction(null,creditorAccount,debtorAccount,transactionDto.getAmount(),transactionDto.getDescription(),BigDecimal.valueOf(95.00) );
         //TODO:95.00 95.0
         when(userAccountService.getConnectedUser()).thenReturn(debtorAccount);
         when(userAccountService.getUserById(creditorAccount.getId())).thenReturn(creditorAccount);
@@ -51,7 +52,15 @@ public class TransactionServiceTest {
         var result = transactionService.createTransaction(transactionDto);
 
         // THEN
-        verify(transactionRepository,times(1)).save(transaction);
+        ArgumentCaptor<Transaction> transactionArgumentCaptor = ArgumentCaptor.forClass(Transaction.class);
+        verify(transactionRepository, times(1)).save(transactionArgumentCaptor.capture());
+
+        assertThat(transactionArgumentCaptor.getValue())
+                .isNotNull()
+                .satisfies(arg -> {
+                    assertThat(arg.getDebtor().getId()).isEqualTo(debtorAccount.getId());
+                });
+
     }
     @Test
     @DisplayName("TransactionService calls transactionRepository findByCreditor method ")

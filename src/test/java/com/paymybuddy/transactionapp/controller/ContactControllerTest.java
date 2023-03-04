@@ -19,20 +19,13 @@ import java.io.IOException;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@ContextConfiguration(classes = { WebSecurityConfig.class })
-@WebAppConfiguration
 public class ContactControllerTest extends AbstractControllerTest{
+    //que ça
+    //TODO: https://www.baeldung.com/spring-security-integration-tests
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-    @Autowired
     private MockMvc mockMvc;
 
-    @BeforeEach
-    public void init() throws IOException {
-        //createDataStorage();
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
-    }
+
 
 
 
