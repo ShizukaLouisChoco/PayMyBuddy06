@@ -23,7 +23,7 @@ public class ContactController {
     @GetMapping("/contact")
     public String contact(Model model){
         model.addAttribute("userAccount",userAccountService.getConnectedUser());
-        model.addAttribute("email",new String());
+        model.addAttribute("email", "");
         model.addAttribute("connections",userAccountService.getConnectedUser().getConnections());
         return "contact";
     }
