@@ -29,7 +29,7 @@
         <form th:method="post" th:action="@{/transfer}" th:object="${transactionDto}">
             <div class="container bg-light px-4">
                 <!--transactionDto needs creditor, amount and description-->
-                <div class="paramerror" th:if="${param.errorMessage}" th:text="${param.errorMessage}"></div>
+                <div class="alert alert-danger" role="alert" th:if="${errorMsg}" th:text="${errorMsg}"></div>
                 <div class="row py-5 align-items-center justify-content-between">
                     <!--Select A connection -->
                     <div class="col-2 form-group  mt-4 align-self-center">
@@ -51,7 +51,7 @@
                     <!--amount -->
                     <div class="col-2">
                         <label for="amount"></label>
-                        <input th:unless="${connections.isEmpty}" type="number" min="2.00" step="0.01"
+                        <input th:unless="${connections.isEmpty}" type="number" min="0.00" step="0.01"
                                th:field="*{amount}" id="amount" placeholder="0€ ">
                     </div>
                     <div class="col-2 mt-3">
@@ -90,21 +90,22 @@
             <div id="pagination">
 
                 <nav aria-label="Page navigation example">
+
                     <ul class="pagination justify-content-center">
-                        <li class="page-item" th:unless="${#vars.currentPage.orElse(1) == 1}">
+                        <li class="page-item" th:unless="${currentPage  == 1}">
                             <a class="page-link"
-                               th:href="@{/transfer(page=${#vars.currentPage.orElse(2) - 1})}">&laquo;</a>
+                               th:href="@{/transfer(page=${currentPage - 1})}">&laquo;</a>
                         </li>
                         <li class="page-item"
-                            th:each="pageNumber : ${#numbers.sequence(1, transactionPage.totalPages +1)}"
-                            th:classappend="${pageNumber} == ${#vars.currentPage.orElse(1)} ? 'active' : ''"
+                            th:each="pageNumber : ${#numbers.sequence(1, transactionPage.totalPages)}"
+                            th:classappend="${pageNumber} == ${#vars.currentPage} ? 'active' : '' "
                             th:if="${not #vars.transactionPage.isEmpty()}">
                             <a class="page-link" th:href="@{/transfer(page=${pageNumber})}" th:text="${pageNumber}"></a>
                         </li>
                         <li class="page-item"
-                            th:unless="${transactionPage.isEmpty() or #vars.currentPage.orElse(1) > transactionPage.totalPages }">
+                            th:unless="${transactionPage.isEmpty() or currentPage >= transactionPage.totalPages }">
                             <a class="page-link"
-                               th:href="@{/transfer(page=${#vars.currentPage.orElse(1) + 1})}">&raquo;</a>
+                               th:href="@{/transfer(page=${#vars.currentPage + 1})}">&raquo;</a>
                         </li>
 
                     </ul>
