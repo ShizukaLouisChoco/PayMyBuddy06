@@ -8,16 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +38,7 @@ public class TransferController {
     @RequestMapping(value="/transfer", method = RequestMethod.GET)
     public String transferPage(Model model,
                                @RequestParam(name = "page", defaultValue = "1" ) Integer currentPage,
-                               @RequestParam(name = "size", defaultValue = "5") Integer pageSize)  {
+                               @RequestParam(name = "size", defaultValue = "3") Integer pageSize)  {
         //This page needs: list of connections, list of transaction (debtor)
         model.addAttribute("userAccount",userAccountService.getConnectedUser());
         //for transactionDto
@@ -58,6 +54,7 @@ public class TransferController {
         model.addAttribute("currentPage", currentPage);
         return "/transfer";
     }
+    //TODO: https://www.baeldung.com/spring-thymeleaf-error-messages
 
     @PostMapping("/transfer")
     public String addTransaction(@Validated @ModelAttribute("transactionDTO")TransactionDto transactionDto, BindingResult result, Model model){

@@ -12,16 +12,16 @@
            <a th:href="@{/home}" href="/home" class="navbar-brand fw-bold bg-success bg-gradient p-1 rounded-3 text-light" >Pay My Buddy</a>
                 <ul class="nav justify-content-end">
                     <li class="nav-item" >
-                        <a class="nav-link text-muted" th:class="${#strings.equals(page, 'Home')}?'font-weight-bold text-primary':'nav-link text-muted'" href="/home" th:href="@{/home}">Home</a>
+                        <a class="nav-link text-muted" th:class="${#strings.equals(page, 'Home')}?'nav-link font-weight-bold text-primary':'nav-link text-muted'" href="/home" th:href="@{/home}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-muted" th:class="${#strings.equals(page, 'Transfer')}?'active':'nav-link text-muted'" href="/transfer" th:href="@{/transfer}">Transfer</a>
+                        <a class="nav-link text-muted" th:class="${#strings.equals(page, 'Transfer')}?'nav-link font-weight-bold text-primary':'nav-link text-muted'" href="/transfer" th:href="@{/transfer}">Transfer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-muted" th:class="${#strings.equals(page, 'Profile')}?'active':'nav-link text-muted'" href="/profile" th:href="@{/profile}">Profile</a>
+                        <a class="nav-link text-muted" th:class="${#strings.equals(page, 'Profile')}?'nav-link font-weight-bold text-primary':'nav-link text-muted'" href="/profile" th:href="@{/profile}">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-muted" th:class="${#strings.equals(page, 'Contact')}?'active':'nav-link text-muted'" href="/contact" th:href="@{/contact}">Contact</a>
+                        <a class="nav-link text-muted" th:class="${#strings.equals(page, 'Contact')}?'nav-link font-weight-bold text-primary':'nav-link text-muted'" href="/contact" th:href="@{/contact}">Contact</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-muted" href="/logout" th:href="@{/logout}">Log off</a>
@@ -31,7 +31,7 @@
     </nav>
 </header>
 <div class="container bg-light" th:fragment="subheader(page)">
-    <a class="active" href="/home" th:href="@{/home}">Home</a> / <span th:text="${page}"></span>
+    <a class="active" style="text-decoration: none" href="/home" th:href="@{/home}">Home  /  </a><span th:text="${page}"></span>
 </div>
 </body>
 </html>
