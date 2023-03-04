@@ -1,5 +1,6 @@
 package com.paymybuddy.transactionapp.entity;
 
+import com.paymybuddy.transactionapp.dto.TransactionDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,13 +33,23 @@ public class Transaction implements Serializable {
     @Column(nullable = false)
     private BigDecimal amount;
 
+ //   private float fee;
+
     @Column(nullable = false)
     private String description;
 
     @Column
     private BigDecimal creditAmount;
 
-   @PrePersist
+    public Transaction(TransactionDto transaction) {
+        creditor = new UserAccount(transaction.getCreditorId());
+        debtor = new UserAccount(transaction.getCreditorId());
+        amount = transaction.getAmount();
+        description = transaction.getDescription();
+
+    }
+
+    @PrePersist
     public void setDebitAmount() {
         if (this.amount != null) {
             this.creditAmount = amount.multiply(BigDecimal.valueOf(0.95));

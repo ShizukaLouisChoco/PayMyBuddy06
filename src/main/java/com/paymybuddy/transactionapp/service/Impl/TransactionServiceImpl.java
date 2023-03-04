@@ -3,7 +3,6 @@ package com.paymybuddy.transactionapp.service.Impl;
 import com.paymybuddy.transactionapp.dto.TransactionDto;
 import com.paymybuddy.transactionapp.entity.Transaction;
 import com.paymybuddy.transactionapp.entity.UserAccount;
-import com.paymybuddy.transactionapp.exception.BalanceException;
 import com.paymybuddy.transactionapp.repository.TransactionRepository;
 import com.paymybuddy.transactionapp.service.TransactionService;
 import com.paymybuddy.transactionapp.service.UserAccountService;
@@ -22,6 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
+    private final static BigDecimal FEE = BigDecimal.valueOf(0.05);
+
     private final UserAccountService userAccountService;
     private final TransactionRepository transactionRepository;
 
@@ -35,25 +36,17 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public Transaction createTransaction(TransactionDto transaction) {
-            UserAccount debtor = userAccountService.getConnectedUser();
-            UserAccount creditor = userAccountService.getUserById(transaction.getCreditorId());
+        UserAccount debtor = userAccountService.getConnectedUser();
+        UserAccount creditor = userAccountService.getUserById(transaction.getCreditorId());
 
-        BigDecimal connectedUserBalance = debtor.getBalance();
-        if(connectedUserBalance.compareTo(transaction.getAmount()) < 0){
-            throw new BalanceException("Your balance is not enough to transfer this amount");
-        }
-        BigDecimal newConnectedUserBalance = connectedUserBalance.subtract(transaction.getAmount());
-        debtor.setBalance(newConnectedUserBalance);
+        debtor.debitAmount(transaction.getAmount());
+        creditor.creditAmount(transaction.getAmount().multiply(FEE));
+
         userAccountService.update(debtor);
-
-        BigDecimal creditorBalance = creditor.getBalance();
-        BigDecimal newCreditorBalance = creditorBalance.add(transaction.getAmountForCreditor());
-        creditor.setBalance(newCreditorBalance);
         userAccountService.update(creditor);
 
-        Transaction newTransaction = new Transaction(null,creditor,debtor,transaction.getAmount(),transaction.getDescription(),transaction.getAmountForCreditor());
-
-            transactionRepository.save(newTransaction);
+        Transaction newTransaction = new Transaction(transaction);
+        transactionRepository.save(newTransaction);
 
 
         return newTransaction;
