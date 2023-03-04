@@ -8,11 +8,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://kit.fontawesome.com/e2ced1320a.css" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/e2ced1320a.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <!--contents-->
 <section>
-    <div class="container text-center ">
+    <div class="container text-center">
+    <div class="border rounded mx-auto my-5 w-50">
         <div class="row ">
             <div class="col text-center">
                 <button class="btn btn-success text-center mt-3 mb-3">Pay My Buddy</button>
@@ -27,35 +30,35 @@
         </div>
         <form th:action="@{/login}" method="post">
             <div class="row my-4 justify-content-center">
-                <label for="inputEmail" class="col-1 col-sm-2 col-form-label ">Email</label>
-                <div class="col-6 ">
+                <label for="inputEmail" class=" col-form-label "></label>
+                <div class="col-11 ">
                     <input type="email" class="form-control" name="email" placeholder="Email"
                            style="font-family:Arial, FontAwesome,serif" id="inputEmail"  required/>
                 </div>
             </div>
-            <div class="row my-4">
-                <Label for="inputPassword" class="col-1 offset-2 col-sm-2 col-form-label ">Password</Label>
-                <div class="col-6 col-sm-5 ">
+            <div class="row my-4 justify-content-center">
+                <div class="col-11 ">
                     <input type="password" class="form-control" name="password"
                            placeholder="Password"
                            style="font-family:Arial, FontAwesome,serif" id="inputPassword" required/>
                 </div>
             </div>
-            <div class="row mb-3 form-group justify-content-center">
+            <div class="row my-3 form-group justify-content-center">
                     <div class="col">
                         <input type="checkbox" name="remember-me" class="form-check-input" id="remember-me">
                         <label class="form-check-label" for="remember-me">Remember Me</label>
                 </div>
             </div>
-            <div class="row ">
-                <div class="col-4 offset-4">
-                    <button id="submit-button" type="submit" class="btn btn-primary">Login</button>
+            <div class="row justify-content-center">
+                <div class="col-9 ">
+                    <button id="submit-button" type="submit" class="btn btn-primary w-50 mt-5">Login</button>
                 </div>
             </div>
         </form>
         <div class="row text-center p-3">
             <a href="/register">You don't have an account? Sign in here !</a>
         </div>
+    </div>
     </div>
 </section>
 </body>

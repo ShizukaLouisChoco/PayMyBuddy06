@@ -22,7 +22,7 @@
                     <h2>Send Money</h2>
                 </div>
                 <div class="ml-auto p-2 bd-highlight">
-                    <button type="button" class="btn btn-primary"><a th:href="@{/contact}">Add Connection</a></button>
+                    <button type="button" class="btn btn-primary"><a  style="text-decoration: none"class="text-white " th:href="@{/contact}">Add Connection</a></button>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
                                th:field="*{amount}" id="amount" placeholder="0€ ">
                     </div>
                     <div class="col-2 mt-3">
-                        <button type="submit" th:unless="${connections.isEmpty}" class="btn btn-success"
+                        <button type="submit" th:unless="${connections.isEmpty}" class="btn btn-success w-100"
                                 th:value="Pay"> Pay
                         </button>
                     </div>
@@ -65,10 +65,10 @@
     </section>
     <section>
         <div class="container">
-
+        <div class=" mt-5">
             <h2>My Transactions</h2>
             <table class="table table-striped ">
-                <thead>
+                <thead class="bg-success text-white font-weight-normal">
                 <tr>
                     <th scope="col">Connections</th>
                     <th scope="col">Description</th>
@@ -111,6 +111,7 @@
                     </ul>
                 </nav>
             </div>
+        </div>
         </div>
     </section>
 </div>
