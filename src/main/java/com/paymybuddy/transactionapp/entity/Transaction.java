@@ -41,9 +41,9 @@ public class Transaction implements Serializable {
     @Column
     private BigDecimal creditAmount;
 
-    public Transaction(TransactionDto transaction) {
+    public Transaction(TransactionDto transaction, Long debtorId) {
         creditor = new UserAccount(transaction.getCreditorId());
-        debtor = new UserAccount(transaction.getCreditorId());
+        debtor = new UserAccount(debtorId);
         amount = transaction.getAmount();
         description = transaction.getDescription();
 
@@ -52,7 +52,7 @@ public class Transaction implements Serializable {
     @PrePersist
     public void setDebitAmount() {
         if (this.amount != null) {
-            this.creditAmount = amount.multiply(BigDecimal.valueOf(0.95));
+            this.creditAmount = amount.multiply(BigDecimal.valueOf(0.995));
         }
     }
 }

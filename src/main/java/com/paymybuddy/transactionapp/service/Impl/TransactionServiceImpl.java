@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
-    private final static BigDecimal FEE = BigDecimal.valueOf(0.05);
+    private final static BigDecimal FEE = BigDecimal.valueOf(0.995);
 
     private final UserAccountService userAccountService;
     private final TransactionRepository transactionRepository;
@@ -45,7 +45,7 @@ public class TransactionServiceImpl implements TransactionService {
         userAccountService.update(debtor);
         userAccountService.update(creditor);
 
-        Transaction newTransaction = new Transaction(transaction);
+        Transaction newTransaction = new Transaction(transaction,debtor.getId());
         transactionRepository.save(newTransaction);
 
 
