@@ -33,8 +33,6 @@ public class Transaction implements Serializable {
     @Column(nullable = false)
     private BigDecimal amount;
 
- //   private float fee;
-
     @Column(nullable = false)
     private String description;
 
@@ -50,9 +48,10 @@ public class Transaction implements Serializable {
     }
 
     @PrePersist
-    public void setDebitAmount() {
+    public void setCreditAmount() {
+        final BigDecimal FEE = BigDecimal.valueOf(0.995);
         if (this.amount != null) {
-            this.creditAmount = amount.multiply(BigDecimal.valueOf(0.995));
+            this.creditAmount = amount.multiply(FEE);
         }
     }
 }

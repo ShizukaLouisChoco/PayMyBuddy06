@@ -39,16 +39,11 @@ public class ProfileController {
         model.addAttribute("transferDto", transferToBank);
         model.addAttribute("creditAmount",BigDecimal.ZERO);
         model.addAttribute("creditAmountDto", new CreditToBankDto());
+        //validation errors
         if(result.hasErrors()){
             return "profile";
-            //display validation errors
-            /*List<String> errorList = new ArrayList<String>();
-            for(ObjectError error : result.getAllErrors()){
-                errorList.add(error.getDefaultMessage());
-            }
-            model.addAttribute("errorMsg", errorList);
-            */
         }
+        //exception handling
         try{
            userAccountService.debitBalance(transferToBank.getDebitAmount());
         }catch(Exception ex){
@@ -65,20 +60,15 @@ public class ProfileController {
 
     @PostMapping("/profile/credit")
     public String CreditFromBank(@Valid @ModelAttribute("creditAmountDto") CreditToBankDto creditAmountDto, BindingResult result, Model model){
-            //validation errors
         model.addAttribute("userAccount", userAccountService.getConnectedUser());
         model.addAttribute("transferDto", new DebitToBankDto());
         model.addAttribute("creditAmount",BigDecimal.ZERO);
         model.addAttribute("creditAmountDto", creditAmountDto);
+        //validation errors
         if(result.hasErrors()){
             return "profile";
-            /*
-            List<String> errorList = new ArrayList<>();
-            for(ObjectError error : result.getAllErrors()){
-                errorList.add(error.getDefaultMessage());
-            }
-            model.addAttribute("errorMsg", errorList);*/
         }
+        //exception handling
         try{
         userAccountService.creditBalance(creditAmountDto.getCreditAmount());
         }catch(Exception ex){
