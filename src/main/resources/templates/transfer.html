@@ -28,8 +28,16 @@
         </div>
         <form th:method="post" th:action="@{/transfer}" th:object="${transactionDto}">
             <div class="container bg-light px-4">
-                <!--transactionDto needs creditor, amount and description-->
-                <div class="alert alert-danger" role="alert" th:if="${errorMsg}" th:text="${errorMsg}"></div>
+                <!--exception handling-->
+                <div th:if="${errorMsg}" th:class="${errorMsg}? 'alert alert-danger':''" role="alert">
+                    <p th:text="${errorMsg}"></p>
+                </div>
+                <!--validation error message-->
+                <div th:if="${#fields.hasAnyErrors()}" th:class="${#fields.hasAnyErrors()}? 'alert alert-danger':''">
+                    <ul>
+                <li  th:each="err:${#fields.allErrors()}" th:text="${err}"></li>
+                </ul>
+            </div>
                 <div class="row py-5 align-items-center justify-content-between">
                     <!--Select A connection -->
                     <div class="col-2 form-group  mt-4 align-self-center">
@@ -98,7 +106,7 @@
                         </li>
                         <li class="page-item"
                             th:each="pageNumber : ${#numbers.sequence(1, transactionPage.totalPages)}"
-                            th:classappend="${pageNumber} == ${#vars.currentPage} ? 'active' : '' "
+                            th:classappend="${pageNumber} == ${#vars.currentPage} ? 'active' : ''"
                             th:if="${not #vars.transactionPage.isEmpty()}">
                             <a class="page-link" th:href="@{/transfer(page=${pageNumber})}" th:text="${pageNumber}"></a>
                         </li>

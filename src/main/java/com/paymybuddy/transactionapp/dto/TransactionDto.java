@@ -28,8 +28,8 @@ public class TransactionDto implements Serializable {
     private BigDecimal amount;
 
     @NotNull
-    @Size(min = 3)
     @NotEmpty(message = "Description cannot be empty.")
+    @Size(min = 3, max = 50)
     private String description;
 
     public BigDecimal getAmountForCreditor() {
