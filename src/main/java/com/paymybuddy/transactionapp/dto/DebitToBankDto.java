@@ -18,23 +18,23 @@ public class DebitToBankDto implements Serializable {
 
 
     @NotNull
-    @Size(min = 3)
-    @NotEmpty(message = "titulaire cannot be empty.")
+    @Size(min = 3, message = "Titrlaire must be more than 3 letters")
+    @NotEmpty(message = "Titulaire cannot be empty.")
     private String titulaire;
 
     @NotNull
-    @Size(min = 23, max=23)
-    @NotEmpty(message = "rib cannot be empty.")
+    @Size(min = 23, max=23, message = "RIB must be more than 23 numbers")
+    @NotEmpty(message = "RIB cannot be empty.")
     private String rib;
 
     @NotNull
-    @Size(min = 27, max = 27)
-    @NotEmpty(message = "iban cannot be empty.")
+    @Size(min = 27, max = 27, message = "IBAN must be 27 numbers")
+    @NotEmpty(message = "IBAN cannot be empty.")
     private String iban;
 
     @NotNull
-    @Size(min = 8)
-    @NotEmpty(message = "swift cannot be empty.")
+    @Size(min = 8, message = "SWIFT must be more than 8 letters")
+    @NotEmpty(message = "SWIFT cannot be empty.")
     private String swift;
     @NotNull(message = "Amount cannot be empty.")
     @DecimalMin(value = "0.01", message = "Amount must be greater than 0.00.")

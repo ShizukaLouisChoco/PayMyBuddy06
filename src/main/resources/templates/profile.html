@@ -23,112 +23,122 @@
     <div class="container p-3">
         <div th:object="${userAccount}">
             <div class="row p-3 offset-2">
-                <h2>Username</h2>
-                <p th:text="*{username}"></p>
+                <h2 class="display-8 font-weight-normal">Username</h2>
+                <p class="display-4" th:text="*{username}"></p>
             </div>
             <div class="row p-3 offset-2">
-                <h2>Email</h2>
-                <p th:text="*{email}"></p>
+                <h2 class="display-8 font-weight-normal">Email</h2>
+                <p class="display-4" th:text="*{email}"></p>
             </div>
-        <div class="row p-3 offset-2">
-            <h2>Balance</h2>
-            <p th:text="*{balance}"></p>
+            <div class="row p-3 offset-2">
+                <h2 class="display-8 font-weight-normal">Balance</h2>
+                <p class="display-4" th:text="*{balance}"></p>
             </div>
         </div>
     </div>
 </section>
 <section>
-    <div class="container">
+    <div class="container border w-75 bg-light my-5">
         <div class="row text-center m-3">
-        <h2>Balance Manipulation</h2>
+            <h2>Balance Manipulation</h2>
             <p>You can credit or debit your balance from/to your bank account</p>
             <p>Click credit or debit button</p>
         </div>
-            <div class="row text-center">
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <div class="col-2 offset-4">
-                        <button type="button" class="btn btn-primary" id="credit-btn">Credit</button>
-                    </div>
-                    <div class="col-2 offset-0">
-                        <button type="button" class="btn btn-primary" id="debit-btn">Debit</button>
-                    </div>
+        <div class="row text-center">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <div class="col-2 offset-4">
+                    <button type="button" class="btn btn-primary" id="credit-btn">Credit</button>
+                </div>
+                <div class="col-2 offset-0">
+                    <button type="button" class="btn btn-primary" id="debit-btn">Debit</button>
                 </div>
             </div>
-            <div class="row  text-center" id="credit-form" style="display:none">
-                <form th:method="post" th:action="@{/profile/credit}" th:object="${creditAmountDTO}">
-                    <!--Amount -->
-                    <div class="col my-3">
-                        <div class="row">
-                        <label for="creditAmount">Enter credit amount</label>
-                        </div>
-                            <div class="row w-25 mx-auto">
-                        <input type="number" min="2.00" step="0.01"
-                               th:field="*{creditAmount}" id="creditAmount" placeholder="0€ " required></input>
-                        </div>
+            <div class="row justify-content-center">
+                <form th:method="post" th:action="@{/profile/credit}" th:object="${creditAmountDto}">
+                    <!--exception handling-->
+                    <div th:if="${errorMsg}" th:class="${errorMsg}? 'alert alert-danger':''" role="alert">
+                        <p th:text="${errorMsg}"></p>
                     </div>
-                    <!--Button-->
-                    <div class="col p-4">
-                        <button type="submi" class="btn btn-success"
-                                th:value="Submit">Submit
-                        </button>
+                    <!--validation error message-->
+                    <div th:object="${transferDto}">
+                    <div th:if="${#fields.hasAnyErrors()}"
+                         th:class="${#fields.hasAnyErrors()}? 'alert alert-danger':''">
+                        <ul class="list-unstyled">
+                            <li th:each="err:${#fields.allErrors()}" th:text="${err}"></li>
+                        </ul>
+                    </div>
+                    </div>
+                    <div class="row  text-center" id="credit-form" style="display:none">
+                        <!--Amount -->
+                        <div class="col my-3">
+                            <div class="row">
+                                <label for="creditAmount">Enter credit amount</label>
+                            </div>
+                            <div class="row w-25 mx-auto">
+                                <input type="number" min="0.00" step="0.01"
+                                       th:field="*{creditAmount}" id="creditAmount" placeholder="0€ " required></input>
+                            </div>
+                        </div>
+                        <!--Button-->
+                        <div class="row">
+                        <div class="col p-4">
+                            <button type="submi" class="btn btn-success"
+                                    th:value="Submit">Submit
+                            </button>
 
+                        </div>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
         <div class="container my-3">
             <div class="row  text-center" id="debit-form" style="display:none">
-                <form th:method="post" th:action="@{/profile/debit}" th:object="${transferDTO}">
-                    <!--transactionDto needs creditor, amount and description-->
-                    <div class="paramerror" th:if="${param.errorMessage}" th:text="${param.errorMessage}"></div>
+                <form th:method="post" th:action="@{/profile/debit}" th:object="${transferDto}">
                     <!--titulaire -->
-                        <div class="row mx-auto">
-                            <p>Enter your bank account information to transfer</p>
-                        </div>
-                        <div class="row mx-auto w-50">
-                            <label for="titulaire">Titulaire : </label>
-                            <input type="text" th:field="*{titulaire}"
-                                   id="titulaire" placeholder="titulaire">
-                        </div>
-                        <!--RIB -->
-                        <div class="row mx-auto w-50">
-                            <label for="rib">RIB : </label>
-                            <input type="text" th:field="*{rib}"
-                                   id="rib" placeholder="RIB">
-                        </div>
-                        <!--IBAN -->
-                        <div class="row mx-auto w-50">
-                            <label for="iban">IBAN : </label>
-                            <input type="text" th:field="*{iban}"
-                                   id="iban" placeholder="IBAN ">
-                        </div>
-                        <!--SWIFT-->
-                        <div class="row mx-auto w-50">
-                            <label for="swift">SWIFT : </label>
-                            <input type="text"
-                                   th:field="*{swift}" id="swift" placeholder="SWIFT">
-                        </div>
-                        <!--Amount-->
-                        <div class="row mx-auto w-50">
-                                <label for="amount">AMOUNT : </label>
-                                <input type="number" min="2.00" step="0.01"
-                                       th:field="*{debitAmount}" id="amount" placeholder="0€ ">
-
-                        </div>
-                        <!--Button-->
-                        <div class="col py-3 text-center">
-                            <div class="right pay">
-                                <button type="submit" class="btn btn-success"
-                                        th:value="Transfer">Transfer
-                                </button>
-                            </div>
+                    <div class="row mx-auto">
+                        <p>Enter your bank account information to transfer</p>
+                    </div>
+                    <div class="row mx-auto w-50">
+                        <label for="titulaire">Titulaire : </label>
+                        <input type="text" th:field="*{titulaire}"
+                               id="titulaire" placeholder="titulaire">
+                    </div>
+                    <!--RIB -->
+                    <div class="row mx-auto w-50">
+                        <label for="rib">RIB : </label>
+                        <input type="text" th:field="*{rib}"
+                               id="rib" placeholder="RIB">
+                    </div>
+                    <!--IBAN -->
+                    <div class="row mx-auto w-50">
+                        <label for="iban">IBAN : </label>
+                        <input type="text" th:field="*{iban}"
+                               id="iban" placeholder="IBAN ">
+                    </div>
+                    <!--SWIFT-->
+                    <div class="row mx-auto w-50">
+                        <label for="swift">SWIFT : </label>
+                        <input type="text"
+                               th:field="*{swift}" id="swift" placeholder="SWIFT">
+                    </div>
+                    <!--Amount-->
+                    <div class="row mx-auto w-50">
+                        <label for="amount">AMOUNT : </label>
+                        <input type="number" min="0.00" step="0.01"
+                               th:field="*{debitAmount}" id="amount" placeholder="0€ ">
+                    </div>
+                    <!--Button-->
+                    <div class="col py-3 text-center">
+                        <div class="right pay">
+                            <button type="submit" class="btn btn-success"
+                                    th:value="Transfer">Transfer
+                            </button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
-    </form>
     </div>
 </section>
 <script>
