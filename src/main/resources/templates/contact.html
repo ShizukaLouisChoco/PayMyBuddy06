@@ -18,6 +18,14 @@
     <section>
 <div class="container text-center mt-3">
         <form th:method="post" th:action="@{/contact}">
+            <!--exception handling-->
+            <div class="row justify-content-center">
+            <div class="col-6">
+            <div th:if="${errorMsg}" th:class="${errorMsg}? 'alert alert-danger':''" role="alert">
+                <p th:text="${errorMsg}"></p>
+            </div>
+            </div>
+            </div>
             <div class="row">
                 <label for="email">Please submit your friend's email to add</label>
             </div>

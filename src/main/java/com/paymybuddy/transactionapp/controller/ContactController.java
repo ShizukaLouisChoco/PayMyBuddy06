@@ -33,8 +33,25 @@ public class ContactController {
      */
 
     @PostMapping("/contact")
-    public String addContact(@ModelAttribute("email")String email){
+    public String addContact(@ModelAttribute("email")String email,Model model){
+        //validation error
+        if(email.isEmpty()){
+            model.addAttribute("userAccount",userAccountService.getConnectedUser());
+            model.addAttribute("email", "");
+            model.addAttribute("connections",userAccountService.getConnectedUser().getConnections());
+            model.addAttribute("errorMsg", "Email cannot be empty");
+            return "contact";
+        }
+        //exception handling
+        try{
         userAccountService.addFriend(email);
+        }catch(Exception ex){
+            model.addAttribute("userAccount",userAccountService.getConnectedUser());
+            model.addAttribute("email", "");
+            model.addAttribute("connections",userAccountService.getConnectedUser().getConnections());
+            model.addAttribute("errorMsg", ex.getMessage());
+            return "contact";
+        }
         return"redirect:/contact";
     }
 }

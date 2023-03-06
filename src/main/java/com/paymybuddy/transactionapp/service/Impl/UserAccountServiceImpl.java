@@ -4,7 +4,7 @@ import com.paymybuddy.transactionapp.dto.RegisterDto;
 import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.exception.BalanceException;
 import com.paymybuddy.transactionapp.exception.EmailAlradyExistException;
-import com.paymybuddy.transactionapp.exception.FriendAlreadyExistException;
+import com.paymybuddy.transactionapp.exception.FriendAddingException;
 import com.paymybuddy.transactionapp.exception.UserAccountNotFoundException;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
 import com.paymybuddy.transactionapp.service.UserAccountService;
@@ -54,13 +54,16 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 
     @Override
-    public UserAccount addFriend(String friendEmail) throws FriendAlreadyExistException {
+    public UserAccount addFriend(String friendEmail) throws FriendAddingException {
         UserAccount friend =  getUser(friendEmail);
 
         UserAccount connectedUser = getConnectedUser();
         //verify if the friend is already in the friend's list of connectedUser
         if(connectedUser.friendExists(friend.getId())) {
-            throw new FriendAlreadyExistException("Friend exists on list");
+            throw new FriendAddingException("This friend is already in your contact list");
+        }
+        if(friend.equals(connectedUser)){
+            throw new FriendAddingException("You cannot add yourself in contact list");
         }
         //if he/she is not in the list, add in the list
         connectedUser.getConnections().add(friend);
@@ -68,11 +71,10 @@ public class UserAccountServiceImpl implements UserAccountService {
         return userAccountRepository.save(connectedUser);
     }
 
-
     @Override
     public UserAccount getUser(String email){
         return userAccountRepository.findByEmail(email)
-                .orElseThrow(() -> new UserAccountNotFoundException("User not found with email = " + email));
+                .orElseThrow(() -> new UserAccountNotFoundException("User not found with email = " + email ));
     }
 
 
