@@ -28,20 +28,20 @@ public class RegisterController {
 
     @PostMapping("/register")
     public String saveUserAccount(Model model, @Valid @ModelAttribute("registerDto") RegisterDto userAccount, BindingResult result) throws EmailAlradyExistException {
+        //validation error
         if(result.hasErrors()){
                 return "register";
         }
-
+        //exception handling
         try {
             userAccountService.createUser(userAccount);
         }catch(Exception exception){
             log.error(String.valueOf(exception));
-            model.addAttribute("error" , exception.getMessage());
+            model.addAttribute("errorMsg" , exception.getMessage());
             return "register";
         }
 
 
-        //todo:emailalreadyexistになった時に、エラーメッセージとregisterpageに戻るor エラーページに。
         return "redirect:/login";
     }
 }

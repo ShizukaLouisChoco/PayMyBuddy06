@@ -8,11 +8,6 @@
             integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
             crossorigin="anonymous"></script>
 <body>
-<!--header-->
-<div id="main_wrapper" th:with="page='Register'">
-    <header th:replace="~{header::header(${page})}"></header>
-    <div th:replace="~{header::subheader(${page})}"></div>
-</div>
 <!--contents-->
 <section>
     <div class="container text-center">
@@ -23,27 +18,44 @@
         </div>
         <form th:action="@{/register}" th:object="${registerDto}" method="POST">
             <div class="row my-4 justify-content-center">
-                <label for="username" class="col-3 offset-2 col-sm-2 col-form-label ">Username</label>
-                <div class="col-6 offset-0">
-                    <input type="text" th:field="*{username}" id="username" placeholder="Username here"/>
-                    <p th:if="${#fields.hasErrors('username')}" th:class="${#fields.hasErrors('username')}? error"
-                       th:errorclass="error" th:errors="*{username}">Validation error</p>
+                <!--exception handling-->
+                <div class="row justify-content-center">
+                    <div class="col-6">
+                <div class="alert alert-danger" th:if="${errorMsg}" th:class="${errorMsg}? 'alert alert-danger':''" role="alert">
+                    <p th:text="${errorMsg}"></p>
+                    </div>
+                </div>
+                </div>
+                <div class="col-3">
+                <label for="username" class="col-form-label ">Username</label>
+                </div>
+                <div class="col-3">
+                <input type="text" th:field="*{username}" id="username" placeholder="Username here"/>
+                <!--validation error-->
+                <p th:if="${#fields.hasErrors('username')}" th:class="${#fields.hasErrors('username')}? 'text-danger'"
+                   th:errorclass="error" th:errors="*{username}"></p>
                 </div>
             </div>
             <div class="row my-4 justify-content-center">
-                <label for="email" class="col-3 offset-2 col-sm-2 col-form-label ">email</label>
-                <div class="col-6 col-sm-5 ">
+                <div class="col-3 ">
+                <label for="email" class=" col-form-label ">email</label>
+                </div>
+                <div class="col-3 ">
                     <input type="email" th:field="*{email}" id="email" placeholder="email here"/>
-                    <p th:if="${#fields.hasErrors('email')}" th:class="${#fields.hasErrors('email')}? error"
-                       th:errorclass="error" th:errors="*{email}">Validation error</p>
+                <!--validation error-->
+                    <p th:if="${#fields.hasErrors('email')}" th:class="${#fields.hasErrors('email')}? 'text-danger'"
+                       th:errorclass="error" th:errors="*{email}"></p>
                 </div>
             </div>
             <div class="row my-4 justify-content-center">
-                <label for="password" class="col-3 offset-2 col-sm-2 col-form-label ">password</label>
-                <div class="col-6 col-sm-5 ">
-                    <input type="password" th:field="*{password}" id="password" placeholder="password here"/>
-                    <p th:if="${#fields.hasErrors('password')}" th:class="${#fields.hasErrors('password')}? error"
-                       th:errorclass="error" th:errors="*{password}">Validation error</p>
+                <div class="col-3">
+                <label for="password" class="col-form-label ">password</label>
+                </div>
+                <div class="col-3">
+                <input type="password" th:field="*{password}" id="password" placeholder="password here"/>
+                <!--validation error-->
+                <p th:if="${#fields.hasErrors('password')}" th:class="${#fields.hasErrors('password')}? 'text-danger'"
+                   th:errorclass="error" th:errors="*{password}"></p>
                 </div>
             </div>
             <div class="row ">
@@ -57,6 +69,7 @@
                 <a href="/login" th:href="@{/login}">Return to login page</a>
             </div>
         </div>
+    </div>
 </section>
 </body>
 </html>
