@@ -54,6 +54,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 
     @Override
+    @Transactional
     public UserAccount addFriend(String friendEmail) throws FriendAddingException {
         UserAccount friend =  getUser(friendEmail);
 
@@ -80,6 +81,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     //function
     @Override
+    @Transactional
     public void debitBalance(BigDecimal amount) {
         UserAccount connectedUser = getConnectedUser();
         BigDecimal actualBalance = connectedUser.getBalance();
@@ -91,6 +93,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
+    @Transactional
     public void creditBalance(BigDecimal creditAmount) {
         UserAccount connectedUser = getConnectedUser();
         connectedUser.creditAmount(creditAmount);
