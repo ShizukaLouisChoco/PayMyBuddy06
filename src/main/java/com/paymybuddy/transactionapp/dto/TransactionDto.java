@@ -29,7 +29,7 @@ public class TransactionDto implements Serializable {
 
     @NotNull
     @NotEmpty(message = "Description cannot be empty.")
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 50, message = "Description must be more than 3 letters")
     private String description;
 
     public BigDecimal getAmountForCreditor() {
