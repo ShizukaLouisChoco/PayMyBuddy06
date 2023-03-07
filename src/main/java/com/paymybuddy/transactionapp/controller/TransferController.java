@@ -2,8 +2,8 @@ package com.paymybuddy.transactionapp.controller;
 
 import com.paymybuddy.transactionapp.dto.TransactionDto;
 import com.paymybuddy.transactionapp.entity.Transaction;
+import com.paymybuddy.transactionapp.service.ConnectedUserDetailsService;
 import com.paymybuddy.transactionapp.service.TransactionService;
-import com.paymybuddy.transactionapp.service.UserAccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,15 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class TransferController {
 
     @Autowired
-    private final UserAccountService userAccountService;
+    private final ConnectedUserDetailsService connectedUserDetailsService;
 
     @Autowired
     private final TransactionService transactionService;
 
-    public TransferController(UserAccountService userAccountService, TransactionService transactionService) {
-        this.userAccountService = userAccountService;
-        this.transactionService = transactionService;
-    }
+    public TransferController(ConnectedUserDetailsService connectedUserDetailsService, TransactionService transactionService) {
+        this.connectedUserDetailsService = connectedUserDetailsService;
+        this.transactionService = transactionService;    }
 
     /**
      * return transfer page of logged in user
@@ -38,9 +37,9 @@ public class TransferController {
     public String transferPage(Model model,
                                @RequestParam(name = "page", defaultValue = "1" ) Integer currentPage,
                                @RequestParam(name = "size", defaultValue = "3") Integer pageSize)  {
-        model.addAttribute("userAccount",userAccountService.getConnectedUser());
+        model.addAttribute("userAccount",connectedUserDetailsService.getConnectedUser());
         model.addAttribute("transactionDto",new TransactionDto());
-        model.addAttribute("connections", userAccountService.getConnectedUser().getConnections());
+        model.addAttribute("connections", connectedUserDetailsService.getConnectedUser().getConnections());
         Page<Transaction> transactionPage = transactionService.findPaginated(PageRequest.of(currentPage -1, pageSize));
         model.addAttribute("transactionPage",  transactionPage);
         model.addAttribute("currentPage", currentPage);
@@ -49,7 +48,7 @@ public class TransferController {
 
     @PostMapping("/transfer")
     public String addTransaction(Model model, @Valid TransactionDto transactionDto, BindingResult result){
-        model.addAttribute("connections", userAccountService.getConnectedUser().getConnections());
+        model.addAttribute("connections", connectedUserDetailsService.getConnectedUser().getConnections());
         Page<Transaction> transactionPage = transactionService.findPaginated(PageRequest.of(0, 3));
         model.addAttribute("transactionDto", transactionDto);
         model.addAttribute("transactionPage",  transactionPage);
@@ -64,7 +63,7 @@ public class TransferController {
             transactionService.createTransaction(transactionDto);
             //return "redirect:/transfer";
         }catch (Exception ex){
-            model.addAttribute("connections", userAccountService.getConnectedUser().getConnections());
+            model.addAttribute("connections", connectedUserDetailsService.getConnectedUser().getConnections());
             model.addAttribute("transactionDto", transactionDto);
             model.addAttribute("transactionPage",  transactionPage);
             model.addAttribute("currentPage", 1);

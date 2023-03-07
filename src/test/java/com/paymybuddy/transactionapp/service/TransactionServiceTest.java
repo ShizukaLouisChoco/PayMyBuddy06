@@ -4,13 +4,12 @@ import com.paymybuddy.transactionapp.dto.TransactionDto;
 import com.paymybuddy.transactionapp.entity.Transaction;
 import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.repository.TransactionRepository;
-import com.paymybuddy.transactionapp.service.Impl.TransactionServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
@@ -24,31 +23,28 @@ public class TransactionServiceTest {
 
     @Mock
     private TransactionRepository transactionRepository;
+
+    @MockBean
     private TransactionService transactionService;
     @Mock
     private UserAccountService userAccountService;
 
+    @Mock
+    ConnectedUserDetailsService connectedUserDetailsService;
 
-    @BeforeEach
-    public void setup() {
-        this.transactionService = new TransactionServiceImpl(userAccountService, transactionRepository);
-
-    }
 
     @Test
     @DisplayName("TransactionService calls transactionRepository addTransaction method")
-    public void TestCreateTransaction() {
+    public void givenTransactionDto_whenCreateTransaction_thenReturnTransaction() {
         // GIVEN
         UserAccount debtorAccount = new UserAccount(1L, "debtor@email.com", "debtor1", "pass123", BigDecimal.valueOf(200), null);
         UserAccount creditorAccount = new UserAccount(2L, "creditor@email.com", "creditor1", "pass123", BigDecimal.ZERO, null);
         TransactionDto transactionDto = new TransactionDto(creditorAccount.getId(), BigDecimal.valueOf(100), "test create transaction");
-        // Transaction transaction = new Transaction(null,creditorAccount,debtorAccount,transactionDto.getAmount(),transactionDto.getDescription(),BigDecimal.valueOf(95.00) );
-        //TODO:95.00 95.0
-        when(userAccountService.getConnectedUser()).thenReturn(debtorAccount);
+
+        when(connectedUserDetailsService.getConnectedUser()).thenReturn(debtorAccount);
         when(userAccountService.getUserById(creditorAccount.getId())).thenReturn(creditorAccount);
 
         // WHEN
-
         var result = transactionService.createTransaction(transactionDto);
 
         // THEN

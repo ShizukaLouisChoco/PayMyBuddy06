@@ -7,9 +7,8 @@ import com.paymybuddy.transactionapp.service.Impl.UserAccountServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -26,71 +25,129 @@ public class UserAccountServiceTest {
 
     @Mock
     private UserAccountRepository userAccountRepository;
+
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    @InjectMocks
+    @Mock
+    private ConnectedUserDetailsService connectedUserDetailsService;
+
+    @MockBean
     private UserAccountServiceImpl userAccountService;
 
 
 
-    @SneakyThrows
-    @Test
-    @DisplayName("UserService calls createUserAccount method and returns CreateUserDto from userAccount")
-    public void TestCreateUser(){
-        // GIVEN
-        List<UserAccount> connectionList = new ArrayList<>();
-        UserAccount userAccount = new UserAccount(null,"email@email","username","password",BigDecimal.ZERO,connectionList);
-        RegisterDto registerDto = new RegisterDto(userAccount.getEmail(),userAccount.getPassword(),userAccount.getUsername());
 
-        //UserAccount newUser =
+    @Test
+    @DisplayName("createUser method can create new account")
+    public void TestCreateUser() throws Exception {
+        // GIVEN
+        final List<UserAccount> connectionList = List.of();
+        final RegisterDto registerDto = new RegisterDto("user@email.com", "password", "username");
+        final String encodedPassword = "encodedPassword";
+
+        final UserAccount expectedUserAccount = new UserAccount(null, registerDto.getEmail() ,registerDto.getUsername(),encodedPassword ,BigDecimal.ZERO, connectionList);
+
         // WHEN
-        when(userAccountRepository.findByEmail(registerDto.getEmail())).thenReturn(Optional.empty());
-        String encodedPassword = "$2a$10$6b3VZMNBjdOgvHBEulqiCea.2HPaNl92GmmzNSKqwuBtStSI89S7O";
-        when(passwordEncoder.encode(registerDto.getPassword())).thenReturn(encodedPassword);
-        userAccount.setPassword(encodedPassword);
-        when(userAccountRepository.save(userAccount)).thenReturn(userAccount);
+        when(userAccountRepository.findByEmail(any())).thenReturn(Optional.empty());
+        when(passwordEncoder.encode(any())).thenReturn(encodedPassword);
+        when(userAccountRepository.save(any(UserAccount.class))).thenAnswer(r -> r.getArguments()[0]);
+
         UserAccount result = userAccountService.createUser(registerDto);
+
         // THEN
-        //TODO:result = null ?
-        assertThat(result).isEqualTo(userAccount);
-        verify(userAccountRepository,times(1)).save(userAccount);
+        verify(userAccountRepository,times(1)).save(any(UserAccount.class));
+
+        assertThat(result)
+                .isNotNull()
+                .satisfies(arg -> assertThat(arg).isEqualTo(expectedUserAccount));
     }
-    @SneakyThrows
     @Test
-    @DisplayName("UserService calls addConnection method with connection's email")
-    public void TestAddConnection(){
+    @DisplayName("mail adress existant throws exception")
+    public void TestAddConnectionThrowsException(){
+        // GIVEN
+        // WHEN
+        // THEN
+    }
+
+
+
+    @Test
+    @DisplayName("connected user can add friend who is not in his contact list")
+    public void TestAddFriend(){
         // GIVEN
         List<UserAccount> connectionList = new ArrayList<>();
-        UserAccount userAccount = new UserAccount(1L,"user@example.com","user","user",null,connectionList);
-        UserAccount connectionAccount = new UserAccount(2L,"user2@example.com","user2","user2",null,null);
+        UserAccount friendUserAccount = new UserAccount(2L,"user2@example.com","user2","user2",null,connectionList);
+        UserAccount connectedUserAccount = new UserAccount(1L,"user@example.com","user","user",null,connectionList);
+        //userAccountServiceMock.createUser(new RegisterDto(connectedUserAccount.getEmail(),connectedUserAccount.getPassword(),connectedUserAccount.getUsername()));
+        //userAccountServiceMock.createUser(new RegisterDto(friendUserAccount.getEmail(),friendUserAccount.getPassword(),friendUserAccount.getUsername()));
+        when(connectedUserDetailsService.getConnectedUser()).thenReturn(connectedUserAccount);
+        when(userAccountService.getUser(friendUserAccount.getEmail())).thenReturn(friendUserAccount);
 
         // WHEN
-        //TODO: on peut pas mocker une mehode dans l'autre méthodde de userAccountService?
-        when(userAccountRepository.findByEmail(connectionAccount.getEmail())).thenReturn(Optional.of(connectionAccount));
-        //TODO: getConnectedUser -> authentication?
-        userAccountService.addFriend(connectionAccount.getEmail());
+        userAccountService.addFriend(friendUserAccount.getEmail());
         // THEN
-        verify(userAccountRepository,times(1)).save(userAccount);
+        verify(userAccountRepository,times(1)).save(connectedUserAccount);
     }
-   @Test
-    @DisplayName("User can debit amount to his bank account")
-    public void TestDebitBalanceAmountToBank(){
-        // GIVEN
 
+    @Test
+    @DisplayName("connected user cannot add friend already in his contact list")
+    public void TestAddFriendThrowsFriendExistsException(){
+
+    }
+
+    @Test
+    @DisplayName("connected user cannot add himself in his contact list")
+    public void TestAddFriendThrowsYouCannotAddYourselfException(){
+
+    }
+
+    @Test
+    @DisplayName("getUser method can find UserAccount from email")
+    public void testGetUser() {
+
+    }
+
+    @Test
+    @DisplayName("getUser method throws exception with email not exists")
+    public void testGetUserThrowsException() {
+
+    }
+
+    @Test
+    @DisplayName("In case of identified user, method will correctely returned userAccount")
+    public void testGetConnectedUser() {
+    }
+
+    @Test
+    @DisplayName("In case non identified, method will throw AuthenticationCredentialsNotFoundException")
+    public void testGetConnectedUserThrowsException() {
+    }
+
+    @Test
+    @DisplayName("User can debit amount to his bank account")
+    public void TestDebitBalance(){
+        // GIVEN
         UserAccount userAccount = new UserAccount(1L,"user@example.com","user","user",BigDecimal.valueOf(50),null);
         BigDecimal actualBalance = userAccount.getBalance();
         BigDecimal amount = BigDecimal.valueOf(30);
         actualBalance.subtract(amount);
         userAccount.setBalance(actualBalance);
+        when(connectedUserDetailsService.getConnectedUser()).thenReturn(userAccount);
         // WHEN
         //TODO: authnticationNotFoundException
         userAccountService.debitBalance(amount);
         // THEN
             verify(userAccount.getBalance()).equals(BigDecimal.valueOf(20));
     }
+
     @Test
-    @DisplayName("UserService calls addFriend method with friendId")
+    @DisplayName("method will throw exception if the balance is not enough")
+    public void TestDebitBalanceThrowsException(){
+
+    }
+    @Test
+    @DisplayName("user can credit balance")
     public void TestCreditBalance(){
         // GIVEN
         UserAccount userAccount = new UserAccount(1L,"user@example.com","user","user",BigDecimal.ZERO,null);
@@ -105,5 +162,27 @@ public class UserAccountServiceTest {
         verify(userAccountRepository,times(1)).save(userAccount);
     }
 
+    @Test
+    @DisplayName("User can update UserAccount")
+    public void TestUpdate(){
 
+    }
+
+    @Test
+    @DisplayName("method will throw exception if user doesn't exist")
+    public void TestUpdateThrowsException(){
+
+    }
+
+    @Test
+    @DisplayName("method can find UserAccount by UserAccount Id")
+    public void TestGetUserById(){
+
+    }
+
+    @Test
+    @DisplayName("method will throw exception if userId doesn't exist")
+    public void TestGetUserByIdThrowsException(){
+
+    }
 }

@@ -15,8 +15,6 @@ public interface UserAccountService {
 
     UserAccount getUser(String email);
 
-    UserAccount getConnectedUser();
-
     //function
     void debitBalance(BigDecimal amount);
     void creditBalance(BigDecimal amount);
