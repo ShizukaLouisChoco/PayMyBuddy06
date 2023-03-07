@@ -7,8 +7,10 @@ import com.paymybuddy.transactionapp.exception.EmailAlradyExistException;
 import com.paymybuddy.transactionapp.exception.FriendAddingException;
 import com.paymybuddy.transactionapp.exception.UserAccountNotFoundException;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
+import com.paymybuddy.transactionapp.service.ConnectedUserDetailsService;
 import com.paymybuddy.transactionapp.service.UserAccountService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -22,16 +24,14 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserAccountServiceImpl implements UserAccountService {
 
     private final UserAccountRepository userAccountRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository) {
-        this.userAccountRepository = userAccountRepository;
-    }
+    private final ConnectedUserDetailsService connectedUserDetailsService;
 
 
     @Override

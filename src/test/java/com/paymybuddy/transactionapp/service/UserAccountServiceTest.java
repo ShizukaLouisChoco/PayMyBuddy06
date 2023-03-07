@@ -4,8 +4,6 @@ import com.paymybuddy.transactionapp.dto.RegisterDto;
 import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
 import com.paymybuddy.transactionapp.service.Impl.UserAccountServiceImpl;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,11 +33,6 @@ public class UserAccountServiceTest {
     private UserAccountServiceImpl userAccountService;
 
 
-    @BeforeEach
-    public void setup() {
-        this.userAccountService = new UserAccountServiceImpl(userAccountRepository);
-        MockitoAnnotations.initMocks(this);
-    }
 
     @SneakyThrows
     @Test
