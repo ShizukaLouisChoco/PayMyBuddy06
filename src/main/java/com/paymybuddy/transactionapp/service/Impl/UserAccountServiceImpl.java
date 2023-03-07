@@ -12,10 +12,6 @@ import com.paymybuddy.transactionapp.service.UserAccountService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +54,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     public UserAccount addFriend(String friendEmail) throws FriendAddingException {
         UserAccount friend =  getUser(friendEmail);
 
-        UserAccount connectedUser = getConnectedUser();
+        UserAccount connectedUser = connectedUserDetailsService.getConnectedUser();
         //verify if the friend is already in the friend's list of connectedUser
         if(connectedUser.friendExists(friend.getId())) {
             throw new FriendAddingException("This friend is already in your contact list");
@@ -83,7 +79,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     @Transactional
     public void debitBalance(BigDecimal amount) {
-        UserAccount connectedUser = getConnectedUser();
+        UserAccount connectedUser = connectedUserDetailsService.getConnectedUser();
         BigDecimal actualBalance = connectedUser.getBalance();
         if(actualBalance.compareTo(amount) < 0){
             throw new BalanceException("Your balance is not enough to transfer this amount");
@@ -95,20 +91,12 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     @Transactional
     public void creditBalance(BigDecimal creditAmount) {
-        UserAccount connectedUser = getConnectedUser();
+        UserAccount connectedUser = connectedUserDetailsService.getConnectedUser();
         connectedUser.creditAmount(creditAmount);
         userAccountRepository.save(connectedUser);
 
     }
 
-    public UserAccount getConnectedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication != null && authentication.getName() != null){
-            return getUser(authentication.getName());
-        }
-
-        throw new AuthenticationCredentialsNotFoundException("User not connected");
-    }
 
     @Transactional
     public UserAccount update(UserAccount userAccountWithNewInfo) {

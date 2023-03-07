@@ -4,13 +4,12 @@ import com.paymybuddy.transactionapp.dto.TransactionDto;
 import com.paymybuddy.transactionapp.entity.Transaction;
 import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.repository.TransactionRepository;
-import com.paymybuddy.transactionapp.service.Impl.TransactionServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
@@ -24,16 +23,15 @@ public class TransactionServiceTest {
 
     @Mock
     private TransactionRepository transactionRepository;
+
+    @MockBean
     private TransactionService transactionService;
     @Mock
     private UserAccountService userAccountService;
 
+    @Mock
+    ConnectedUserDetailsService connectedUserDetailsService;
 
-    @BeforeEach
-    public void setup() {
-        this.transactionService = new TransactionServiceImpl(userAccountService, transactionRepository);
-
-    }
 
     @Test
     @DisplayName("TransactionService calls transactionRepository addTransaction method")

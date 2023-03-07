@@ -4,6 +4,7 @@ import com.paymybuddy.transactionapp.dto.TransactionDto;
 import com.paymybuddy.transactionapp.entity.Transaction;
 import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.repository.TransactionRepository;
+import com.paymybuddy.transactionapp.service.ConnectedUserDetailsService;
 import com.paymybuddy.transactionapp.service.TransactionService;
 import com.paymybuddy.transactionapp.service.UserAccountService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final static BigDecimal FEE = BigDecimal.valueOf(0.995);
 
+    private final ConnectedUserDetailsService connectedUserDetailsService;
     private final UserAccountService userAccountService;
     private final TransactionRepository transactionRepository;
 
@@ -36,7 +38,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public Transaction createTransaction(TransactionDto transaction) {
-        UserAccount debtor = userAccountService.getConnectedUser();
+        UserAccount debtor = connectedUserDetailsService.getConnectedUser();
         UserAccount creditor = userAccountService.getUserById(transaction.getCreditorId());
 
         debtor.debitAmount(transaction.getAmount());
@@ -60,7 +62,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Page<Transaction> findPaginated(Pageable pageable) {
-        Long debtorId = userAccountService.getConnectedUser().getId();
+        Long debtorId = connectedUserDetailsService.getConnectedUser().getId();
         return transactionRepository.findAllByDebtorId(debtorId,pageable);
     }
 }

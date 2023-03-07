@@ -2,8 +2,10 @@ package com.paymybuddy.transactionapp.controller;
 
 import com.paymybuddy.transactionapp.dto.CreditToBankDto;
 import com.paymybuddy.transactionapp.dto.DebitToBankDto;
+import com.paymybuddy.transactionapp.service.ConnectedUserDetailsService;
 import com.paymybuddy.transactionapp.service.UserAccountService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.math.BigDecimal;
 
 @Controller
+@RequiredArgsConstructor
 public class ProfileController {
 
 
