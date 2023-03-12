@@ -5,6 +5,7 @@ import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.exception.BalanceException;
 import com.paymybuddy.transactionapp.exception.EmailAlradyExistException;
 import com.paymybuddy.transactionapp.exception.FriendAddingException;
+import com.paymybuddy.transactionapp.exception.UserAccountNotFoundException;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
 import com.paymybuddy.transactionapp.service.Impl.UserAccountServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -185,6 +186,23 @@ public class UserAccountServiceTest {
 
     }
 
+    @Test
+    @DisplayName("getUser throws exception with Email not found")
+    public void testGetUserThrowsException() {
+        // GIVEN
+        final String email = "nonExistingEmail";
+
+        // WHEN
+        when(userAccountRepository.findByEmail(any())).thenReturn(Optional.empty());
+        // THEN
+        assertThatThrownBy(() -> {
+            userAccountService.getUser(email);
+        })
+                .isInstanceOf(UserAccountNotFoundException.class)
+                .hasMessageContaining("User not found with email = " + email );
+
+
+    }
 
     @Test
     @DisplayName("User can debit amount to his bank account")

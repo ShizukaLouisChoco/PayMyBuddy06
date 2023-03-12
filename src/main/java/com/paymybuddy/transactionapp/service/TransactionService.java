@@ -2,7 +2,6 @@ package com.paymybuddy.transactionapp.service;
 
 import com.paymybuddy.transactionapp.dto.TransactionDto;
 import com.paymybuddy.transactionapp.entity.Transaction;
-import com.paymybuddy.transactionapp.exception.TransactionNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,6 +13,6 @@ public interface TransactionService {
 
     List<Transaction> findAllByCreditorId(Long id);
 
-    Page<Transaction> findPaginated(Pageable pageable)throws TransactionNotFoundException;
+    Page<Transaction> findPaginated(Pageable pageable);
 
 }
