@@ -9,6 +9,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -16,7 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -26,16 +30,18 @@ public class UserDetailsServiceTest {
     UserAccountRepository userAccountRepository;
 
     private UserDetailsService userDetailsService;
+    private ConnectedUserDetailsService connectedUserDetailsService;
 
     @BeforeEach
     public void setup() {
         this.userDetailsService = new UserDetailsServiceImpl(userAccountRepository);
+        this.connectedUserDetailsService = new UserDetailsServiceImpl(userAccountRepository);
     }
 
     @Test
     @DisplayName("loadUserByUsername if UserAccountExists ShouldReturnUserDetails")
     public void testLoadUserByUsername() {
-        // GIVEn a user exists
+        // GIVEN
         UserAccount userAccount = new UserAccount(1L, "creditor@email.com", "creditor1", "pass123", null, null);
 
         // WHEN
@@ -52,10 +58,55 @@ public class UserDetailsServiceTest {
     @Test
     @DisplayName("When a not found user tried to connection, then throw UserAccountNotFoundException")
     public void testLoadUserByUsernameException() {
+        //WHEN
         when(userAccountRepository.findByEmail("notExisting@example.com")).thenReturn(java.util.Optional.empty());
-
+        //THEN
         assertThrows(UserAccountNotFoundException.class , () -> userDetailsService.loadUserByUsername("notExisting@example.com"));
     }
+
+    @Test
+    @DisplayName("getConnectedUser returns connected user")
+    public void TestGetConnectedUser() {
+        //GIVEN
+        Authentication authentication = new UsernamePasswordAuthenticationToken("test@example.com", "password");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserAccount userAccount = new UserAccount();
+        userAccount.setEmail("test@example.com");
+
+        //WHEN
+        when(userAccountRepository.findByEmail("test@example.com")).thenReturn(Optional.of(userAccount));
+
+        UserAccount result = connectedUserDetailsService.getConnectedUser();
+
+        //THEN
+        assertNotNull(result);
+        assertEquals("test@example.com", result.getEmail());
+    }
+
+    @Test
+    @DisplayName("When a not found user tried to connection, then throw UserAccountNotFoundException")
+    public void TestGetConnectedUserThrowsUserAccountNotFoundException() {
+        //GIVEN
+        Authentication authentication = new UsernamePasswordAuthenticationToken("test@example.com", "password");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //WHEN
+        when(userAccountRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
+        //THEN
+        assertThrows(UserAccountNotFoundException.class , () -> connectedUserDetailsService.getConnectedUser());
+    }
+
+    @Test
+    @DisplayName("When a not found user tried to connection, then throw AuthenticationCredentialsNotFoundException")
+    public void TestGetConnectedUserThrowsAuthenticationCredentialsNotFoundException() {
+        // GIVEN
+        SecurityContextHolder.getContext().setAuthentication(null);
+        //WHEN
+        //THEN
+        assertThrows(AuthenticationCredentialsNotFoundException.class , () -> connectedUserDetailsService.getConnectedUser());
+    }
+
+
+
 
 }
 
