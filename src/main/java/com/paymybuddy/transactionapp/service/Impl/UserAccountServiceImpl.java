@@ -23,11 +23,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserAccountServiceImpl implements UserAccountService {
 
+    private final ConnectedUserDetailsService connectedUserDetailsService;
     private final UserAccountRepository userAccountRepository;
-
     private final PasswordEncoder passwordEncoder;
 
-    private final ConnectedUserDetailsService connectedUserDetailsService;
 
 
     @Override
