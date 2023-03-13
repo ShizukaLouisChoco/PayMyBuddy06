@@ -16,8 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class RegisterControllerTest {
-
+public class RegisterControllerTest extends AbstractControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
