@@ -1,15 +1,7 @@
 package com.paymybuddy.transactionapp.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.ResultActions;
-
-import java.util.List;
-
-
 public class AbstractControllerTest {
-
+/*
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -30,6 +22,6 @@ public class AbstractControllerTest {
     protected <T> List<T> toList(ResultActions resultActions, Class<T> type) {
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString();
         return objectMapper.readerForListOf(type).readValue(contentAsString);
-    }
+    }*/
 
 }

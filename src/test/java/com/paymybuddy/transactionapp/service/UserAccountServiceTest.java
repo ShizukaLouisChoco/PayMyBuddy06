@@ -112,7 +112,7 @@ public class UserAccountServiceTest {
         assertThat(result)
                 .isNotNull()
                 .satisfies(arg -> assertThat(arg).isEqualTo(connectedUserAccount),
-                        arg -> assertThat(arg.getConnections()).contains(expectedUserAccount));
+                        arg -> assertThat(arg.getFriends()).contains(expectedUserAccount));
 
     }
 

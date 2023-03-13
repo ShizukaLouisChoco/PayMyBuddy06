@@ -25,7 +25,7 @@ public class ContactController {
     public String contact(Model model){
         model.addAttribute("userAccount",connectedUserDetailsService.getConnectedUser());
         model.addAttribute("email", "");
-        model.addAttribute("connections",connectedUserDetailsService.getConnectedUser().getConnections());
+        model.addAttribute("connections",connectedUserDetailsService.getConnectedUser().getFriends());
         return "contact";
     }
     /**
@@ -39,7 +39,7 @@ public class ContactController {
         if(email.isEmpty()){
             model.addAttribute("userAccount",connectedUserDetailsService.getConnectedUser());
             model.addAttribute("email", "");
-            model.addAttribute("connections",connectedUserDetailsService.getConnectedUser().getConnections());
+            model.addAttribute("connections",connectedUserDetailsService.getConnectedUser().getFriends());
             model.addAttribute("errorMsg", "Email cannot be empty");
             return "contact";
         }
@@ -49,7 +49,7 @@ public class ContactController {
         }catch(Exception ex){
             model.addAttribute("userAccount",connectedUserDetailsService.getConnectedUser());
             model.addAttribute("email", "");
-            model.addAttribute("connections",connectedUserDetailsService.getConnectedUser().getConnections());
+            model.addAttribute("connections",connectedUserDetailsService.getConnectedUser().getFriends());
             model.addAttribute("errorMsg", ex.getMessage());
             return "contact";
         }

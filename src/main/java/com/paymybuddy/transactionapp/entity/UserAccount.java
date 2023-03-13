@@ -39,20 +39,16 @@ public class UserAccount implements Serializable {
 
     private BigDecimal balance = BigDecimal.ZERO;
 
-    @ManyToMany
-    @JoinTable(
-            name = "USER_ACCOUNT_CONNECTIONS",
-            joinColumns = @JoinColumn(name = "USER_ACCOUNT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "CONNECTION_ID"))
-    private List<UserAccount> connections = new ArrayList<>();
+    @ManyToMany(cascade =  CascadeType.PERSIST, fetch=FetchType.EAGER)
+    private List<UserAccount> friends = new ArrayList<>();
 
     public UserAccount(Long id) {
-         this.id = id;
+        this.id = id;
     }
 
 
     public boolean friendExists(Long id){
-        return connections.stream().anyMatch(f -> f.id.equals(id));
+        return friends.stream().anyMatch(f -> f.id.equals(id));
     }
 
 

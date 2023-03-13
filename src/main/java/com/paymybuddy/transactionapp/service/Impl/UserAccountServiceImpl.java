@@ -62,7 +62,7 @@ public class UserAccountServiceImpl implements UserAccountService {
             throw new FriendAddingException("You cannot add yourself in contact list");
         }
         //if he/she is not in the list, add in the list
-        connectedUser.getConnections().add(friend);
+        connectedUser.getFriends().add(friend);
         //update connectedUser
         return userAccountRepository.save(connectedUser);
     }
@@ -103,7 +103,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         UserAccount userAccountToUpdate = optionalUserAccount.orElseThrow();
         userAccountToUpdate.setUsername(userAccountWithNewInfo.getUsername());
         userAccountToUpdate.setBalance(userAccountWithNewInfo.getBalance());
-        userAccountToUpdate.setConnections(userAccountWithNewInfo.getConnections());
+        userAccountToUpdate.setFriends(userAccountWithNewInfo.getFriends());
         return userAccountRepository.save(userAccountToUpdate);
 
     }

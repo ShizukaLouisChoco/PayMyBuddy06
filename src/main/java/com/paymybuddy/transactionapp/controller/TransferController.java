@@ -39,7 +39,7 @@ public class TransferController {
                                @RequestParam(name = "size", defaultValue = "3") Integer pageSize)  {
         model.addAttribute("userAccount",connectedUserDetailsService.getConnectedUser());
         model.addAttribute("transactionDto",new TransactionDto());
-        model.addAttribute("connections", connectedUserDetailsService.getConnectedUser().getConnections());
+        model.addAttribute("connections", connectedUserDetailsService.getConnectedUser().getFriends());
         Page<Transaction> transactionPage = transactionService.findPaginated(PageRequest.of(currentPage -1, pageSize));
         model.addAttribute("transactionPage",  transactionPage);
         model.addAttribute("currentPage", currentPage);
@@ -48,7 +48,7 @@ public class TransferController {
 
     @PostMapping("/transfer")
     public String addTransaction(Model model, @Valid TransactionDto transactionDto, BindingResult result){
-        model.addAttribute("connections", connectedUserDetailsService.getConnectedUser().getConnections());
+        model.addAttribute("connections", connectedUserDetailsService.getConnectedUser().getFriends());
         Page<Transaction> transactionPage = transactionService.findPaginated(PageRequest.of(0, 3));
         model.addAttribute("transactionDto", transactionDto);
         model.addAttribute("transactionPage",  transactionPage);
@@ -63,7 +63,7 @@ public class TransferController {
             transactionService.createTransaction(transactionDto);
             //return "redirect:/transfer";
         }catch (Exception ex){
-            model.addAttribute("connections", connectedUserDetailsService.getConnectedUser().getConnections());
+            model.addAttribute("connections", connectedUserDetailsService.getConnectedUser().getFriends());
             model.addAttribute("transactionDto", transactionDto);
             model.addAttribute("transactionPage",  transactionPage);
             model.addAttribute("currentPage", 1);

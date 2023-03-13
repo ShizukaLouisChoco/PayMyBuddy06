@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -36,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService , ConnectedUse
                 .orElseThrow(UserAccountNotFoundException::new);
     }
 
-
+    @Transactional
     public UserAccount getConnectedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && authentication.getName() != null){
