@@ -9,7 +9,6 @@ public class LoginController {
     /**
      * login page needs user's email and password
      * url : "<a href="http://localhost:8080/login">...</a>"
-     * @return UserAccountServiceDto
      */
     @GetMapping("/login")
     public String loginPage() {
