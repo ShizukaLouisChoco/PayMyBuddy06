@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService , ConnectedUse
                 .orElseThrow(UserAccountNotFoundException::new);
     }
 
-
+    @Transactional
     public UserAccount getConnectedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && authentication.getName() != null){
