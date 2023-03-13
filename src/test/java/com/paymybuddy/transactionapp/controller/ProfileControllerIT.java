@@ -13,7 +13,7 @@ import java.io.IOException;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ProfileControllerTest extends AbstractControllerTest{
+public class ProfileControllerIT {
     @Autowired
     private MockMvc mockMvc;
 
