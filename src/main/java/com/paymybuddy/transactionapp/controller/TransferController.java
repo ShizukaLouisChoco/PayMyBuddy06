@@ -5,7 +5,7 @@ import com.paymybuddy.transactionapp.entity.Transaction;
 import com.paymybuddy.transactionapp.service.ConnectedUserDetailsService;
 import com.paymybuddy.transactionapp.service.TransactionService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -17,17 +17,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class TransferController {
 
-    @Autowired
     private final ConnectedUserDetailsService connectedUserDetailsService;
 
-    @Autowired
     private final TransactionService transactionService;
 
-    public TransferController(ConnectedUserDetailsService connectedUserDetailsService, TransactionService transactionService) {
-        this.connectedUserDetailsService = connectedUserDetailsService;
-        this.transactionService = transactionService;    }
 
     /**
      * return transfer page of logged in user
@@ -55,7 +51,7 @@ public class TransferController {
         model.addAttribute("currentPage", 1);
             //validation errors
         if(result.hasErrors()){
-            return "transfer";
+            return "/transfer";
         }
 
         //exception handling
@@ -68,7 +64,7 @@ public class TransferController {
             model.addAttribute("transactionPage",  transactionPage);
             model.addAttribute("currentPage", 1);
             model.addAttribute("errorMsg", ex.getMessage());
-            return "transfer";
+            return "/transfer";
         }
         return "redirect:/transfer";
 
