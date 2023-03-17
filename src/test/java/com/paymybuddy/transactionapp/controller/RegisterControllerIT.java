@@ -29,18 +29,20 @@ public class RegisterControllerIT {
                 .andExpect(model().attributeExists("registerDto"));
     }
 
-    @DisplayName("registerPage can create new userAccount with postmapping")
+    @DisplayName("registerPage can create new userAccount with post mapping")
     @Test
     public void registerPagePostTest() throws Exception {
         // GIVEN
+        final String url = "/register";
         RegisterDto registerDto = new RegisterDto("newuser@example.com","newuser","newuser");
 
         // WHEN
-        final var response  =  mockMvc.perform(post("/register")
+        final var response  =  mockMvc.perform(post(url)
                 .with(csrf())
                 .param("username",registerDto.getUsername())
                 .param("email", registerDto.getEmail())
                 .param("password", registerDto.getPassword()));
+
         // THEN
         response.andDo(MockMvcResultHandlers.print())
                 .andExpect(status().is3xxRedirection())
@@ -49,10 +51,11 @@ public class RegisterControllerIT {
     }
 
 
+    @DisplayName("registerPage returns with validation error")
     @Test
-    public void registerPagePostWithInvalidPAsswordTest() throws Exception {
+    public void registerPagePostWithInvalidPasswordTest() throws Exception {
         // GIVEN
-        RegisterDto registerDto = new RegisterDto("user@example.com","aaaaaa","newuser");
+        RegisterDto registerDto = new RegisterDto("user@example.com",null,"newuser");
 
         // WHEN
         final var response  =  mockMvc.perform(post("/register")
@@ -60,6 +63,7 @@ public class RegisterControllerIT {
                 .param("username",registerDto.getUsername())
                 .param("email", registerDto.getEmail())
                 .param("password", registerDto.getPassword()));
+
         // THEN
         response.andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk());
@@ -67,10 +71,11 @@ public class RegisterControllerIT {
     }
 
 
+    @DisplayName("registerPage returns with exception")
     @Test
     public void registerPagePostWithInvalidExistingUser() throws Exception {
         // GIVEN
-        RegisterDto registerDto = new RegisterDto("newuser@example.com","a","newuser");
+        RegisterDto registerDto = new RegisterDto("user@example.com","aaaa","newuser");
 
         // WHEN
         final var response  =  mockMvc.perform(post("/register")
@@ -78,12 +83,11 @@ public class RegisterControllerIT {
                 .param("username",registerDto.getUsername())
                 .param("email", registerDto.getEmail())
                 .param("password", registerDto.getPassword()));
+
         // THEN
         response.andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
-
-                .andExpect(model().attributeExists("userAccount"));
-
+                .andExpect(model().attributeExists("errorMsg"));
     }
 
 
