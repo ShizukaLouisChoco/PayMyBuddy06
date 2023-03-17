@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class ContactController {
 
-    ConnectedUserDetailsService connectedUserDetailsService;
-    UserAccountService userAccountService;
+    private final ConnectedUserDetailsService connectedUserDetailsService;
+    private final UserAccountService userAccountService;
 
 
     /**
@@ -22,11 +22,11 @@ public class ContactController {
      * url : "<a href="http://localhost:8080/contact">...</a>"
      */
     @GetMapping("/contact")
-    public String contact(Model model){
+    public String contactPage(Model model){
         model.addAttribute("userAccount",connectedUserDetailsService.getConnectedUser());
         model.addAttribute("email", "");
         model.addAttribute("connections",connectedUserDetailsService.getConnectedUser().getFriends());
-        return "contact";
+        return "/contact";
     }
     /**
      * connected user can add friend in this page.
@@ -41,7 +41,7 @@ public class ContactController {
             model.addAttribute("email", "");
             model.addAttribute("connections",connectedUserDetailsService.getConnectedUser().getFriends());
             model.addAttribute("errorMsg", "Email cannot be empty");
-            return "contact";
+            return "/contact";
         }
         //exception handling
         try{
@@ -51,7 +51,7 @@ public class ContactController {
             model.addAttribute("email", "");
             model.addAttribute("connections",connectedUserDetailsService.getConnectedUser().getFriends());
             model.addAttribute("errorMsg", ex.getMessage());
-            return "contact";
+            return "/contact";
         }
         return"redirect:/contact";
     }
