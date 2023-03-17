@@ -43,7 +43,7 @@ public class ProfileController {
         model.addAttribute("creditAmountDto", new CreditToBankDto());
         //validation errors
         if(result.hasErrors()){
-            return "profile";
+            return "/profile";
         }
         //exception handling
         try{
@@ -54,7 +54,7 @@ public class ProfileController {
             model.addAttribute("creditAmount",BigDecimal.ZERO);
             model.addAttribute("creditAmountDto", new CreditToBankDto());
             model.addAttribute("errorMsg", ex.getMessage());
-            return "profile";
+            return "/profile";
         }
 
         return "redirect:/profile";
@@ -68,7 +68,7 @@ public class ProfileController {
         model.addAttribute("creditAmountDto", creditAmountDto);
         //validation errors
         if(result.hasErrors()){
-            return "profile";
+            return "/profile";
         }
         //exception handling
         try{
@@ -79,7 +79,7 @@ public class ProfileController {
             model.addAttribute("creditAmount",BigDecimal.ZERO);
             model.addAttribute("creditAmountDto", creditAmountDto);
             model.addAttribute("errorMsg", ex.getMessage());
-            return "profile";
+            return "/profile";
         }
         return "redirect:/profile";
     }
