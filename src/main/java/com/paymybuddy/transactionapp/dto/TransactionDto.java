@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * DTO to create transaction
@@ -33,7 +34,9 @@ public class TransactionDto implements Serializable {
     private String description;
 
     public BigDecimal getAmountForCreditor() {
-        BigDecimal fee = BigDecimal.valueOf(0.05);
-        return amount.subtract(amount.multiply(fee));
+        //fee is 0.5%
+        final BigDecimal FEE = BigDecimal.valueOf(0.005);
+        BigDecimal calculatedAmount = amount.subtract(amount.multiply(FEE));
+        return calculatedAmount.setScale(2, RoundingMode.HALF_UP);
     }
 }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Data
 @AllArgsConstructor
@@ -49,9 +50,12 @@ public class Transaction implements Serializable {
 
     @PrePersist
     public void setCreditAmount() {
+        //fee is 0.5%
         final BigDecimal FEE = BigDecimal.valueOf(0.995);
         if (this.amount != null) {
-            this.creditAmount = amount.multiply(FEE);
+            BigDecimal calculatedAmount = amount.multiply(FEE);
+            BigDecimal scaledAmount = calculatedAmount.setScale(2, RoundingMode.HALF_UP);
+            this.creditAmount = scaledAmount;
         }
     }
 }
