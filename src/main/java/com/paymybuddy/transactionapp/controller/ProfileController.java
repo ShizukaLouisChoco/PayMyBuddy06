@@ -70,17 +70,7 @@ public class ProfileController {
         if(result.hasErrors()){
             return "/profile";
         }
-        //exception handling
-        try{
-            userAccountService.creditBalance(creditAmountDto.getCreditAmount());
-        }catch(Exception ex){
-            model.addAttribute("userAccount", connectedUserDetailsService.getConnectedUser());
-            model.addAttribute("transferDto", new DebitToBankDto());
-            model.addAttribute("creditAmount",BigDecimal.ZERO);
-            model.addAttribute("creditAmountDto", creditAmountDto);
-            model.addAttribute("errorMsg", ex.getMessage());
-            return "/profile";
-        }
+        userAccountService.creditBalance(creditAmountDto.getCreditAmount());
         return "redirect:/profile";
     }
 

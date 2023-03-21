@@ -61,9 +61,10 @@ public class ProfileControllerIT {
     @WithMockUser(username = "user2@example.com")
     @DisplayName("/profile/credit with validation error")
     @Test
-    public void testCreditToBankWithValidationError() throws Exception {
+    public void testCreditFromBankWithValidationError() throws Exception {
         //GIVEN
         final String url = "/profile/credit";
+
         // WHEN
         final var response = mockMvc.perform(post(url)
                 .with(csrf())
@@ -79,30 +80,6 @@ public class ProfileControllerIT {
                 .andExpect(model().attributeExists("creditAmount"))
                 .andExpect(model().attributeExists("creditAmountDto"));
     }
-    //TODO
-    /*
-    @WithMockUser(username = "user2@example.com")
-    @DisplayName("profile/credit with exception ")
-    @Test
-    public void testCreditToBankWithException() throws Exception {
-        //GIVEN
-        final String url = "/profile/credit";
-        // WHEN
-        final var response = mockMvc.perform(post(url)
-                .with(csrf())
-                .param("creditAmount",""));
-
-
-        // THEN
-        response.andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isOk())
-                .andExpect(view().name("/profile"))
-                .andExpect(model().attributeExists("userAccount"))
-                .andExpect(model().attributeExists("transferDto"))
-                .andExpect(model().attributeExists("creditAmount"))
-                .andExpect(model().attributeExists("creditAmountDto"))
-                .andExpect(model().attributeExists("errorMsg"));
-    }*/
 
     @WithMockUser(username = "user2@example.com")
     @DisplayName("profile/debit can credit money to balance")
