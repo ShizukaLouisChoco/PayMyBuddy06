@@ -52,10 +52,8 @@ public class Transaction implements Serializable {
     public void setCreditAmount() {
         //fee is 0.5%
         final BigDecimal FEE = BigDecimal.valueOf(0.995);
-        if (this.amount != null) {
-            BigDecimal calculatedAmount = amount.multiply(FEE);
-            BigDecimal scaledAmount = calculatedAmount.setScale(2, RoundingMode.HALF_UP);
-            this.creditAmount = scaledAmount;
-        }
+        BigDecimal calculatedAmount = amount.multiply(FEE);
+        BigDecimal scaledAmount = calculatedAmount.setScale(2, RoundingMode.HALF_UP);
+        this.creditAmount = scaledAmount;
     }
 }
