@@ -3,7 +3,7 @@ package com.paymybuddy.transactionapp.service.Impl;
 import com.paymybuddy.transactionapp.dto.RegisterDto;
 import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.exception.BalanceException;
-import com.paymybuddy.transactionapp.exception.EmailAlradyExistException;
+import com.paymybuddy.transactionapp.exception.EmailAlreadyExistException;
 import com.paymybuddy.transactionapp.exception.FriendAddingException;
 import com.paymybuddy.transactionapp.exception.UserAccountNotFoundException;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
@@ -31,12 +31,12 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     @Transactional
-    public UserAccount createUser(RegisterDto user) throws EmailAlradyExistException{
+    public UserAccount createUser(RegisterDto user) throws EmailAlreadyExistException {
         //verification if the email is already used
         Optional<UserAccount> userExists = userAccountRepository.findByEmail(user.getEmail());
 
         if(userExists.isPresent()){
-            throw new EmailAlradyExistException("Your email address is already registered");
+            throw new EmailAlreadyExistException("Your email address is already registered");
         }
         //if it's not used, save in database with encoded password
         UserAccount newUser = new UserAccount();

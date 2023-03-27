@@ -3,7 +3,7 @@ package com.paymybuddy.transactionapp.service;
 import com.paymybuddy.transactionapp.dto.RegisterDto;
 import com.paymybuddy.transactionapp.entity.UserAccount;
 import com.paymybuddy.transactionapp.exception.BalanceException;
-import com.paymybuddy.transactionapp.exception.EmailAlradyExistException;
+import com.paymybuddy.transactionapp.exception.EmailAlreadyExistException;
 import com.paymybuddy.transactionapp.exception.FriendAddingException;
 import com.paymybuddy.transactionapp.exception.UserAccountNotFoundException;
 import com.paymybuddy.transactionapp.repository.UserAccountRepository;
@@ -81,7 +81,7 @@ public class UserAccountServiceTest {
             assertThatThrownBy(() -> {
                 userAccountService.createUser(registerDto);
             })
-                    .isInstanceOf(EmailAlradyExistException.class)
+                    .isInstanceOf(EmailAlreadyExistException.class)
                     .hasMessageContaining("Your email address is already registered");
     }
 

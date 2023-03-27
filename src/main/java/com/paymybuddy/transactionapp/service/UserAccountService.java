@@ -2,14 +2,14 @@ package com.paymybuddy.transactionapp.service;
 
 import com.paymybuddy.transactionapp.dto.RegisterDto;
 import com.paymybuddy.transactionapp.entity.UserAccount;
-import com.paymybuddy.transactionapp.exception.EmailAlradyExistException;
+import com.paymybuddy.transactionapp.exception.EmailAlreadyExistException;
 import com.paymybuddy.transactionapp.exception.FriendAddingException;
 
 import java.math.BigDecimal;
 
 public interface UserAccountService {
 
-    UserAccount createUser(RegisterDto user) throws EmailAlradyExistException;
+    UserAccount createUser(RegisterDto user) throws EmailAlreadyExistException;
 
     UserAccount addFriend(String friendEmail) throws FriendAddingException;
 
