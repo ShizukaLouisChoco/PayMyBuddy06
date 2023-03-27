@@ -38,6 +38,10 @@ public class WebSecurityConfig {
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .permitAll()
+                .deleteCookies("JSESSIONID")
+                .and()
+                .rememberMe()
+                .key("uniqueAndSecret")
                 .and()
                 .headers(headers -> headers.frameOptions().disable());
 
