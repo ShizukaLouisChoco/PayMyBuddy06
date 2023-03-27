@@ -10,8 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
 
 @Configuration
 @EnableWebSecurity
@@ -26,8 +24,6 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .requestMatchers("/register").permitAll()
-                .requestMatchers(toH2Console()).permitAll()
-                //.requestMatchers("/static/css/**").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .formLogin()
@@ -43,8 +39,8 @@ public class WebSecurityConfig {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .permitAll()
                 .and()
-                .headers(headers -> headers.frameOptions().disable())
-                .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()));
+                .headers(headers -> headers.frameOptions().disable());
+
         return http.build();
     }
 
