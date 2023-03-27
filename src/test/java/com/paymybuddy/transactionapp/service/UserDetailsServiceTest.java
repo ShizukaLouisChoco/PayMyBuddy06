@@ -64,6 +64,7 @@ public class UserDetailsServiceTest {
         assertThrows(UserAccountNotFoundException.class , () -> userDetailsService.loadUserByUsername("notExisting@example.com"));
     }
 
+
     @Test
     @DisplayName("getConnectedUser returns connected user")
     public void TestGetConnectedUser() {
@@ -105,8 +106,27 @@ public class UserDetailsServiceTest {
         assertThrows(AuthenticationCredentialsNotFoundException.class , () -> connectedUserDetailsService.getConnectedUser());
     }
 
+    @Test
+    @DisplayName("When authentication is null, then throw AuthenticationCredentialsNotFoundException")
+    public void TestGetConnectedUserWithAuthenticationNullThrowsUserAccountNotFoundException() {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(null, null);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //WHEN
+        when(userAccountRepository.findByEmail("test@example.com")).thenReturn(null);
+        //THEN
+        assertThrows(UserAccountNotFoundException.class , () -> connectedUserDetailsService.getConnectedUser());
+    }
 
-
+    @Test
+    @DisplayName("When authentication is null, then throw AuthenticationCredentialsNotFoundException")
+    public void TestGetConnectedUserWithAuthenticationNullThrowsNullPointerException() {
+        Authentication authentication = new UsernamePasswordAuthenticationToken("test@example.com", null);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //WHEN
+        when(userAccountRepository.findByEmail("test@example.com")).thenReturn(null);
+        //THEN
+        assertThrows(NullPointerException.class , () -> connectedUserDetailsService.getConnectedUser());
+    }
 
 }
 
