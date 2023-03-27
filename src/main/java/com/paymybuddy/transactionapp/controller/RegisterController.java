@@ -1,7 +1,7 @@
 package com.paymybuddy.transactionapp.controller;
 
 import com.paymybuddy.transactionapp.dto.RegisterDto;
-import com.paymybuddy.transactionapp.exception.EmailAlradyExistException;
+import com.paymybuddy.transactionapp.exception.EmailAlreadyExistException;
 import com.paymybuddy.transactionapp.service.UserAccountService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String saveUserAccount(Model model, @Valid @ModelAttribute("registerDto") RegisterDto userAccount, BindingResult result) throws EmailAlradyExistException {
+    public String saveUserAccount(Model model, @Valid @ModelAttribute("registerDto") RegisterDto userAccount, BindingResult result) throws EmailAlreadyExistException {
         //validation error
         if(result.hasErrors()){
                 return "register";
