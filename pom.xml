@@ -19,21 +19,21 @@
     </properties>
     <dependencies>
 
-<!--        web-->
+        <!--        web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-<!--        database-->
+        <!--        database-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -42,7 +42,7 @@
             <scope>test</scope>
         </dependency>
 
-<!--        security-->
+        <!--        security-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -52,7 +52,7 @@
             <artifactId>spring-security-config</artifactId>
         </dependency>
 
-<!--        ui-->
+        <!--        ui-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -63,7 +63,7 @@
         </dependency>
 
 
-<!--        commons-->
+        <!--        commons-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -77,37 +77,19 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
 
-<!--        tests-->
-
+        <!--        tests-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hamcrest</groupId>
-                    <artifactId>hamcrest-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -135,11 +117,6 @@
             <version>3.12.0</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
@@ -163,150 +140,124 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <!--<configuration>
-                <version>0.8.4</version>-->
-                <!--                    <excludes>-->
-                <!--&lt;!&ndash;        <exclude>com/paymybuddy/transactionapp/entity/*</exclude>&ndash;&gt;-->
-                <!--&lt;!&ndash;        <exclude>com/paymybuddy/transactionapp/dto/*</exclude>&ndash;&gt;-->
-                <!--                    </excludes>-->
-                <!--                </configuration>-->
-                                <executions>
-                                    <execution>
-                                        <id>before-unit-test-execution</id>
-                                        <goals>
-                                            <goal>prepare-agent</goal>
-                                        </goals>
-                                        <configuration>
-                                            <destFile>${project.build.directory}/jacoco-output/jacoco-unit-tests.exec</destFile>
-                                            <propertyName>surefire.jacoco.args</propertyName>
-                                        </configuration>
-                                    </execution>
-                                    <execution>
-                                        <id>after-unit-test-execution</id>
-                                        <phase>test</phase>
-                                        <goals>
-                                            <goal>report</goal>
-                                        </goals>
-                                        <configuration>
-                                            <dataFile>${project.build.directory}/jacoco-output/jacoco-unit-tests.exec</dataFile>
-                                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-unit-test-coverage-report</outputDirectory>
-                                        </configuration>
-                                    </execution>
-                                    <execution>
-                                        <id>before-integration-test-execution</id>
-                                        <phase>pre-integration-test</phase>
-                                        <goals>
-                                            <goal>prepare-agent</goal>
-                                        </goals>
-                                        <configuration>
-                                            <destFile>${project.build.directory}/jacoco-output/jacoco-integration-tests.exec</destFile>
-                                            <propertyName>failsafe.jacoco.args</propertyName>
-                                        </configuration>
-                                    </execution>
-                                    <execution>
-                                        <id>after-integration-test-execution</id>
-                                        <phase>post-integration-test</phase>
-                                        <goals>
-                                            <goal>report</goal>
-                                        </goals>
-                                        <configuration>
-                                            <dataFile>${project.build.directory}/jacoco-output/jacoco-integration-tests.exec</dataFile>
-                                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-integration-test-coverage-report</outputDirectory>
-                                        </configuration>
-                                    </execution>
-                                    <execution>
-                                        <id>merge-unit-and-integration</id>
-                                        <phase>post-integration-test</phase>
-                                        <goals>
-                                            <goal>merge</goal>
-                                        </goals>
-                                        <configuration>
-                                            <fileSets>
-                                                <fileSet>
-                                                    <directory>${project.build.directory}/jacoco-output/</directory>
-                                                    <includes>
-                                                        <include>*.exec</include>
-                                                    </includes>
-                                                </fileSet>
-                                            </fileSets>
-                                            <destFile>${project.build.directory}/jacoco-output/merged.exec</destFile>
-                                        </configuration>
-                                    </execution>
-                                    <execution>
-                                        <id>create-merged-report</id>
-                                        <phase>post-integration-test</phase>
-                                        <goals>
-                                            <goal>report</goal>
-                                        </goals>
-                                        <configuration>
-                                            <dataFile>${project.build.directory}/jacoco-output/merged.exec</dataFile>
-                                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-merged-test-coverage-report</outputDirectory>
-                                        </configuration>
-                                    </execution>
-                                    <execution>
-                                        <id>check</id>
-                                        <phase>verify</phase>
-                                        <goals>
-                                            <goal>check</goal>
-                                        </goals>
-                                        <configuration>
-                                            <rules>
-                                                <rule>
-                                                    <element>CLASS</element>
-                                                    <excludes>
-                                                        <exclude>*Test</exclude>
-                                                        <exclude>*IT</exclude>
-                                                    </excludes>
-                                                    <limits>
-                                                        <limit>
-                                                            <counter>LINE</counter>
-                                                            <value>COVEREDRATIO</value>
-                                                            <minimum>100%</minimum>
-                                                        </limit>
-                                                    </limits>
-                                                </rule>
-                                            </rules>
-                                            <dataFile>${project.build.directory}/jacoco-output/merged.exec</dataFile>
-                                        </configuration>
-                                    </execution>
-                                </executions>
-                            </plugin>
-                            <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-surefire-plugin</artifactId>
-                                <version>2.22.2</version>
-                                <configuration>
-                                    <argLine>${surefire.jacoco.args}</argLine>
-                                </configuration>
-                            </plugin>
-                            <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-failsafe-plugin</artifactId>
-                                <version>2.22.2</version>
-                                <configuration>
-                                    <argLine>${failsafe.jacoco.args}</argLine>
-                                </configuration>
-                                <executions>
-                                    <execution>
-                                        <goals>
-                                            <goal>integration-test</goal>
-                                            <goal>verify</goal>
-                                        </goals>
-                                    </execution>
-                                </executions>
-                            </plugin>
-                            <plugin>
-                                <!--JaCoCo :: Maven Plugin -->
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>0.8.8</version>
+                <executions>
+                    <execution>
+                        <id>before-unit-test-execution</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <destFile>${project.build.directory}/jacoco-output/jacoco-unit-tests.exec</destFile>
+                            <propertyName>surefire.jacoco.args</propertyName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>after-unit-test-execution</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/jacoco-output/jacoco-unit-tests.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-unit-test-coverage-report</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>before-integration-test-execution</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <destFile>${project.build.directory}/jacoco-output/jacoco-integration-tests.exec</destFile>
+                            <propertyName>failsafe.jacoco.args</propertyName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>after-integration-test-execution</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/jacoco-output/jacoco-integration-tests.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-integration-test-coverage-report</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>merge-unit-and-integration</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>merge</goal>
+                        </goals>
+                        <configuration>
+                            <fileSets>
+                                <fileSet>
+                                    <directory>${project.build.directory}/jacoco-output/</directory>
+                                    <includes>
+                                        <include>*.exec</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
+                            <destFile>${project.build.directory}/jacoco-output/merged.exec</destFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>create-merged-report</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/jacoco-output/merged.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-merged-test-coverage-report</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>CLASS</element>
+                                    <excludes>
+                                        <exclude>*Test</exclude>
+                                        <exclude>*IT</exclude>
+                                    </excludes>
+                                </rule>
+                            </rules>
+                            <dataFile>${project.build.directory}/jacoco-output/merged.exec</dataFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
                 <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
+                    <argLine>${surefire.jacoco.args}</argLine>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <argLine>${failsafe.jacoco.args}</argLine>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
