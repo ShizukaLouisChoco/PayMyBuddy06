@@ -21,20 +21,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
-
     private final static BigDecimal FEE = BigDecimal.valueOf(0.995);
 
     private final ConnectedUserDetailsService connectedUserDetailsService;
     private final UserAccountService userAccountService;
     private final TransactionRepository transactionRepository;
 
-
-    /**
-     * user make a transaction to friend with
-     * url : <a href="http://localhost:8080/transaction">...</a>
-     *
-     * @return TransactionDto
-     */
     @Override
     @Transactional
     public Transaction createTransaction(TransactionDto transaction) {

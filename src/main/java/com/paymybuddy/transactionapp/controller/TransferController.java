@@ -26,8 +26,8 @@ public class TransferController {
 
 
     /**
-     * return transfer page of logged in user
-     * @return
+     * transfer page can display transaction list and transaction form
+     * url : "<a href="http://localhost:8080/transfer">...</a>"
      */
     @RequestMapping(value="/transfer", method = RequestMethod.GET)
     public String transferPage(Model model,
@@ -42,6 +42,10 @@ public class TransferController {
         return "/transfer";
     }
 
+    /**
+     * transfer page can add transaction from friends list
+     * url : "<a href="http://localhost:8080/transfer">...</a>"
+     */
     @PostMapping("/transfer")
     public String addTransaction(Model model, @Valid TransactionDto transactionDto, BindingResult result){
         model.addAttribute("connections", connectedUserDetailsService.getConnectedUser().getFriends());

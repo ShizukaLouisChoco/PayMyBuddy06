@@ -20,12 +20,21 @@ public class RegisterController {
     @Autowired
     private UserAccountService userAccountService;
 
+    /**
+     * register page can display reigister form
+     * url : "<a href="http://localhost:8080/register">...</a>"
+     */
+
     @GetMapping("/register")
     public String registerPage(Model model){
         model.addAttribute("registerDto",new RegisterDto());
         return "register";
     }
 
+    /**
+     * register page can add user account
+     * url : "<a href="http://localhost:8080/register">...</a>"
+     */
     @PostMapping("/register")
     public String saveUserAccount(Model model, @Valid @ModelAttribute("registerDto") RegisterDto userAccount, BindingResult result) throws EmailAlreadyExistException {
         //validation error

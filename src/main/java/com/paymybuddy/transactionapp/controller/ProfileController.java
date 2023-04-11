@@ -25,7 +25,10 @@ public class ProfileController {
 
     private final UserAccountService userAccountService;
 
-
+    /**
+     * profile page has debit and credit button
+     * url : "<a href="http://localhost:8080/profile">...</a>"
+     */
     @RequestMapping(value="/profile", method = RequestMethod.GET)
     public String profile(Model model){
         model.addAttribute("userAccount", connectedUserDetailsService.getConnectedUser());
@@ -35,6 +38,10 @@ public class ProfileController {
         return "/profile";
     }
 
+    /**
+     * debit button can transfer balance to bank account
+     * url : "<a href="http://localhost:8080/profile/debit">...</a>"
+     */
     @PostMapping("/profile/debit")
     public String DebitToBank(@Valid @ModelAttribute("transferDto") DebitToBankDto transferToBank, BindingResult result, Model model){
         model.addAttribute("userAccount", connectedUserDetailsService.getConnectedUser());
@@ -59,6 +66,10 @@ public class ProfileController {
 
         return "redirect:/profile";
     }
+    /**
+     * credit button can add money to balance
+     * url : "<a href="http://localhost:8080/profile/credit">...</a>"
+     */
 
     @PostMapping("/profile/credit")
     public String CreditFromBank(@Valid @ModelAttribute("creditAmountDto") CreditToBankDto creditAmountDto, BindingResult result, Model model){
