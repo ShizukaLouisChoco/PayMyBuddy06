@@ -17,8 +17,8 @@ To run this application on your local machine, please follow the instructions be
 https://adoptium.net/temurin/releases?version=17
 * Install Maven:\
 https://maven.apache.org/install.html
-* Install Spring\
-https://spring.io/tools
+* Install MySql:\
+
 
 
 ### Application
@@ -53,39 +53,15 @@ Before running the application, make sure to perform the following steps:
 CREATE DATABASE paymybuddy;
 USE paymybuddy;
 ```
-3) Creation of tables by running the following command:
-```bash
-CREATE TABLE user_account (
-id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-email VARCHAR(30) NOT NULL,
-username VARCHAR(255) NOT NULL,
-password VARCHAR(255) NOT NULL,
-balance DECIMAL(19,2) DEFAULT '0.00');
-```
-```bash
-CREATE TABLE transaction (
-transaction_id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-amount DECIMAL(19,2),
-credit_amount DECIMAL(19,2),
-description VARCHAR(255),
-creditor_id BIGINT(20),
-debtor_id BIGINT(20));
-```
-```bash
-CREATE TABLE user_account_friends (
-user_account_id BIGINT(20) NOT NULL,
-friends_id BIGINT(20) NOT NULL,
-PRIMARY KEY (user_account_id, friends_id),
-CONSTRAINT fk_user_account
-FOREIGN KEY (user_account_id)
-REFERENCES user_account (id)
-ON DELETE CASCADE,
-CONSTRAINT fk_friends
-FOREIGN KEY (friends_id)
-REFERENCES user_account (id)
-ON DELETE CASCADE
-);
-```
+3) Tables will be created automatically by running the application:
+* transaction
+* user_account
+* user_account_friends
+
+4) First Data will be inserted automatically by running the application:
+* user
+* user2
+* user3
 
 ### Test
 ```bash
